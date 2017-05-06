@@ -7,6 +7,7 @@ import lmdb
 import caffe
 import pickle
 import sys
+import random
 
 import params
 
@@ -28,5 +29,6 @@ with env.begin(write=True) as txn:
         datum.height = 1
         datum.width = params.WINDOW_SIZE
         datum.data = spectrograms[i,:].tobytes()
-        str_id = '{:08}'.format(i)
+        #str_id = '{:08}'.format(i)
+		str_id = '{:05}'.format(random.randint(1,99000))+'{:05}'.format(i) # shuffle data
         txn.put(str_id.encode('ascii'), datum.SerializeToString())
