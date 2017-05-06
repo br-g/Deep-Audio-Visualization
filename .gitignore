@@ -1,5 +1,7 @@
 # Folders
 learning/data/raw_audio
+lib
+timeline.txt
 
 # Compiled Object files
 *.slo
