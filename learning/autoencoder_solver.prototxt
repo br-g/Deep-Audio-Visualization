@@ -1,0 +1,19 @@
+net: "autoencoder.prototxt"
+test_state: { stage: 'test-on-train' }
+test_iter: 500
+test_state: { stage: 'test-on-test' }
+test_iter: 100
+test_interval: 100000
+test_compute_loss: true
+base_lr: 0.05
+lr_policy: "step"
+gamma: 0.1
+stepsize: 50000
+display: 100
+max_iter: 50000
+weight_decay: 0.0005
+snapshot: 10000
+snapshot_prefix: "snapshots/autoencoder_"
+momentum: 0.9
+solver_mode: CPU
+type: "SGD"
