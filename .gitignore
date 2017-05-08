@@ -1,7 +1,19 @@
 # Folders
 learning/data/raw_audio
+learning/data/lmdb
+learning/data/spectro_data
+learning/snapshots
+learning/weights
+web-app/weights
+web-app/node_modules
+web-app/lib
+web-app/models
+
 lib
 timeline.txt
+
+# Python
+*.pyc
 
 # Compiled Object files
 *.slo
