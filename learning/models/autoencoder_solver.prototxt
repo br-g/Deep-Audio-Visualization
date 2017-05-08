@@ -1,4 +1,4 @@
-net: "autoencoder.prototxt"
+net: "models/autoencoder.prototxt"
 test_state: { stage: 'test-on-train' }
 test_iter: 500
 test_state: { stage: 'test-on-test' }

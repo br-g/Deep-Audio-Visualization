@@ -3,37 +3,6 @@ layer {
   name: "data"
   type: "Data"
   top: "data"
-  include {
-    phase: TRAIN
-  }
-  data_param {
-    source: "data/lmdb/lmdb0"
-    batch_size: 100
-    backend: LMDB
-  }
-}
-layer {
-  name: "data"
-  type: "Data"
-  top: "data"
-  include {
-    phase: TEST
-    stage: "test-on-train"
-  }
-  data_param {
-    source: "data/lmdb/lmdb0"
-    batch_size: 100
-    backend: LMDB
-  }
-}
-layer {
-  name: "data"
-  type: "Data"
-  top: "data"
-  include {
-    phase: TEST
-    stage: "test-on-test"
-  }
   data_param {
     source: "data/lmdb/lmdb0"
     batch_size: 100
@@ -129,12 +98,18 @@ layer {
       value: 0
     }
   }
+  include {
+    phase: TRAIN
+  }
 }
 layer {
   name: "decode2neuron"
   type: "Sigmoid"
   bottom: "decode2"
   top: "decode2neuron"
+  include {
+    phase: TRAIN
+  }
 }
 layer {
   name: "decode1"
@@ -161,12 +136,18 @@ layer {
       value: 0
     }
   }
+  include {
+    phase: TRAIN
+  }
 }
 layer {
   name: "decode1neuron"
   type: "Sigmoid"
   bottom: "decode1"
   top: "decode1neuron"
+  include {
+    phase: TRAIN
+  }
 }
 layer {
   name: "loss"
@@ -175,4 +156,7 @@ layer {
   bottom: "flatdata"
   top: "l2_error"
   loss_weight: 1
+  include {
+    phase: TRAIN
+  }
 }

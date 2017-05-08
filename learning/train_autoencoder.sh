@@ -2,4 +2,4 @@
 set -e
 
 ../lib/caffe/build/tools/caffe train \
-  --solver=./autoencoder_solver.prototxt $@
+  --solver=./models/autoencoder_solver.prototxt $@
