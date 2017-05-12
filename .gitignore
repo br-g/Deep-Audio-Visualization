@@ -8,6 +8,7 @@ web-app/weights
 web-app/node_modules
 web-app/lib
 web-app/models
+web-app/samples
 
 lib
 timeline.txt
