@@ -29,7 +29,7 @@ function AudioManager () {
     		    callback(new Features(data['Title'], data['Artist'], data['FPS'], data['Features']));
     		})
     		.fail(function() {
-    			console.log( "Ajax error" );
+    			console.log("Ajax error while loading audio features");
     		});
     }
 
