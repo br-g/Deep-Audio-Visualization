@@ -1,20 +1,29 @@
-$( document ).ready(function() {
+function App () {
+	this.animationManager = null;
+	this.audioManager = null;
 
-	audioManager = new AudioManager();
-	audioManager.loadFeatures('features/test1.json', featuresLoaded);
+	this.loadAudio = function() {
+		this.audioManager = new AudioManager();
+		this.audioManager.loadAudio('audio/m1_mono.wav');
+	}
 
-});
-
-function featuresLoaded(features) {
-
-	audioManager.loadMusic('audio/m1_mono.wav');
-
-	// Creates and launches animation
-	animation = new Animation(features);
-	animation.init();
-	animation.setMode('cube');
+	this.loadAnimation = function () {
+		this.animationManager = new AnimationManager();
+		this.animationManager.init();
+		this.animationManager.setAnimation('particles');
+		this.animationManager.loadFeatures('features/test1.json');
+	}
 
 	// Launches animation & music
-	animation.launch();
-	audioManager.playMusic();
+	this.launch = function() {
+		this.audioManager.playMusic();
+		this.animationManager.launch();
+	}
 }
+
+$(document).ready(function() {
+	var app = new App();
+	app.loadAudio();
+	app.loadAnimation();
+	app.launch();
+});

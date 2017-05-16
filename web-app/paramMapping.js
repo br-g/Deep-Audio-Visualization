@@ -12,12 +12,40 @@ var Parameter = function (name, minValue, maxValue) {
 
 // Represents a mapping from input features to animation parameters.
 var ParamMapping = function(size, params, map) {
-	this.size = size;
-	this.params = params;
-	this.map = map;
+	this.size = 0;
+	this.params = null;
+	this.map = null;
+
+	// Loads parameters from AJAX.
+	this.load = function (filePath) {
+		var size = 0;
+		var params = null;
+		var map = null;
+	    $.ajax({
+	      url: filePath,
+	      dataType: 'json',
+	      async: false,
+	      success: function(data) {
+	        console.log("Animation parameters successfully loaded");
+		    size = data['parameters'].length;
+		    params = [];
+		    map = [];
+		    for (i = 0; i < size; i++) {
+		    	params.push(new Parameter(
+		    		data['parameters'][i]['name'],
+		    		data['parameters'][i]['min'],
+		    		data['parameters'][i]['max']));
+		    	map.push(i);
+		    }
+	      }
+	    });
+	    this.size = size;
+	    this.params = params;
+	    this.map = map;
+	}
 
 	this.randomize = function () {
-		// Uses Fisher–Yates Shuffle
+		// Uses Fisher–Yates shuffle
 		var currentIndex = this.map.length;
 		while (currentIndex > 0) {
 			var randomIndex = Math.floor(Math.random() * currentIndex);
@@ -34,43 +62,10 @@ var ParamMapping = function(size, params, map) {
 		if (features.length !== this.size) {
 			console.log("Warning: features vector size and number of animation parameters are different.");
 		}
+		var parameters = {};
 		for (var i = 0; i < this.size; i++) {
-			var m = {};
-			m[this.params[i].name] = this.params[i].scale(features[map[i]]);
-			parameters.push(m);
+			parameters[this.params[i].name] = this.params[i].scale(features[this.map[i]]);
 		}
 		return parameters;
 	}
 }
-
-// Loads parameters from AJAX and returns a mapping object.
-function getParamMapping(paramFilePath, callback) {
-	$.getJSON(paramFilePath)
-		.done(function(data) {
-		    console.log("Animation parameters successfully loaded");
-		    var size = data['parameters'].length;
-		    var params = [];
-		    var map = [];
-		    for (i = 0; i < size; i++) {
-		    	params.push(new Parameter(
-		    		data['parameters'][i]['name'],
-		    		data['parameters'][i]['min'],
-		    		data['parameters'][i]['max']));
-		    	map.push(i);
-		    }
-		    callback(new ParamMapping(size, params, map))
-		})
-		.fail(function() {
-			console.log("Ajax error while loading animation parameters.");
-		});
-}
-
-/*getParamMapping('animations/particles/parameters.json', mappingLoaded);
-function mappingLoaded(paramMapping) {
-	for (var i = 0; i < 10; i++) {
-		paramMapping.randomize();
-		var m = paramMapping.doMap([0.2, 0.45, 0.99]);
-		console.log(m);
-	}
-}*/
-
