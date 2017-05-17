@@ -1,3 +1,7 @@
+####
+# Plots test loss, from Caffe training logs
+###
+
 import numpy as np
 import re
 import click
