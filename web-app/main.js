@@ -1,21 +1,29 @@
 function App () {
 	this.animationManager = null;
 	this.audioManager = null;
+	this.playlistManager = null;
 
-	this.loadAudio = function() {
+	this.init = function () {
 		this.audioManager = new AudioManager();
-		this.audioManager.loadAudio('audio/m1_mono.wav');
-	}
-
-	this.loadAnimation = function () {
 		this.animationManager = new AnimationManager();
 		this.animationManager.init();
-		this.animationManager.setAnimation('particles');
-		this.animationManager.loadFeatures('features/test1.json');
+		this.setAnimation('particles');
+		this.playlistManager = new PlaylistManager();
 	}
 
-	// Launches animation & music
-	this.launch = function() {
+	this.loadPlaylist = function (filePath) {
+		this.playlistManager.load(filePath);
+		this.playlistManager.randomize();
+	}
+
+    this.setAnimation = function(animName) {
+    	this.animationManager.setAnimation(animName);
+    }
+
+	this.playNextSong = function () {
+		var nextSong = this.playlistManager.nextSong();
+		this.audioManager.load(this.playlistManager.getAudioPath());
+		this.animationManager.loadFeatures(this.playlistManager.getFeaturesPath());
 		this.audioManager.playMusic();
 		this.animationManager.launch();
 	}
@@ -23,7 +31,7 @@ function App () {
 
 $(document).ready(function() {
 	var app = new App();
-	app.loadAudio();
-	app.loadAnimation();
-	app.launch();
+	app.init();
+	app.loadPlaylist('playlist.json');
+	app.playNextSong();
 });
