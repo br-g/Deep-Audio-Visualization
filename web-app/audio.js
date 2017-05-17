@@ -1,7 +1,7 @@
 function AudioManager () {
     this.audio = null;
 
-    this.loadAudio = function (filePath) {
+    this.load = function (filePath) {
         this.audio = new Audio(filePath);
     }
 

@@ -1,0 +1,5 @@
+{
+	"playlist": [
+		{ "title": "test titre", "artist": "Jean", "audioFilePath": "audio/m0_mono.wav", "featuresFilePath": "features/test1.json" }
+	]
+}
