@@ -1,5 +1,6 @@
 {
 	"playlist": [
-		{ "title": "test titre", "artist": "Jean", "audioFilePath": "audio/m0_mono.wav", "featuresFilePath": "features/test1.json" }
+		{ "title": "test titre", "artist": "Jean", "audioFilePath": "audio/m0_mono.wav", "featuresFilePath": "features/f1.json" },
+		{ "title": "Le petit Nanard", "artist": "Claude", "audioFilePath": "audio/m0_mono.wav", "featuresFilePath": "features/f1.json" }
 	]
 }

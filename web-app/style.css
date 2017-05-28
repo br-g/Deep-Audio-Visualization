@@ -1,0 +1,42 @@
+body {
+	margin: 0;
+}
+canvas {
+	width: 100%;
+	height: 100%;
+}
+#controls {
+	position: fixed;
+    bottom: 0px;
+    background-color: #131313;
+    height: 50px;
+    width: 100%;
+    border-top: #333333;
+    border-style: solid;
+    border-top-width: 2px;
+    opacity: 0.5;
+}
+	#controls > #next {
+		width: 31px;
+		position: absolute;
+		right: 24px;
+		bottom: 9px;
+	}
+	#controls > #songInfo {
+		color: white;
+	    text-align: center;
+	    font-family: sans-serif;
+	}
+		#controls > #songInfo > #title {
+			font-size: 19px;
+		    font-weight: 600;
+		    margin-top: 6px;
+		}
+		#controls > #songInfo > #artist {
+			font-size: 13px;
+		    font-weight: 200;
+		    font-style: italic;
+		    margin-top: -1px;
+		    margin-bottom: 0px;
+		}
+	    
