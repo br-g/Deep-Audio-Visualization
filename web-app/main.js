@@ -22,10 +22,16 @@ function App () {
 
 	this.playNextSong = function () {
 		var nextSong = this.playlistManager.nextSong();
+		this.audioManager.pauseMusic();
+		this.audioManager.load(this.playlistManager.getAudioPath());
 		this.audioManager.load(this.playlistManager.getAudioPath());
 		this.animationManager.loadFeatures(this.playlistManager.getFeaturesPath());
 		this.audioManager.playMusic();
 		this.animationManager.launch();
+	}
+
+	this.randomizeAnimation = function () {
+		this.animationManager.randomize();
 	}
 }
 
@@ -34,4 +40,19 @@ $(document).ready(function() {
 	app.init();
 	app.loadPlaylist('playlist.json');
 	app.playNextSong();
+
+	function updateSongInfo() {
+		$("#controls > #songInfo > #title").html(app.playlistManager.getTitle());
+		$("#controls > #songInfo > #artist").html(app.playlistManager.getArtist());
+	}
+
+	updateSongInfo();
+	$("#controls > #next").click(function() {
+	  app.playNextSong();
+	  updateSongInfo();
+	});
+
+	$("canvas").click(function() {
+	  app.randomizeAnimation();
+	});
 });

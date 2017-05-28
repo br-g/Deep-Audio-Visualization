@@ -61,6 +61,7 @@ function AnimationManager() {
 		requestAnimationFrame(renderAnimation);
 		renderer.render(ctx['scene'], ctx['camera']);
 		var curTime = new Date().getTime();
+		console.log(features.get(curTime - startTime))
 		anim.update((curTime - lastRenderTime) / 1000.0, paramMapping.doMap(features.get(curTime - startTime)));
 		lastRenderTime = curTime;
 	}
