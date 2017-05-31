@@ -17,6 +17,8 @@ def emptyFolder(path):
 	    os.remove(path + "/" + f)
 
 def addTrainingSamples(LmdbfilePath, nbSamples):
+	batchSampleCount = 0
+
 	emptyFolder('../raw_audio')
 	downloadTrainingSamples.downloadFromYouTube('../raw_audio/m', batchSize)
 
@@ -29,13 +31,20 @@ def addTrainingSamples(LmdbfilePath, nbSamples):
 	filelist = [ f for f in os.listdir('../raw_audio') ]
 	for f in filelist:
 		pickleFilePath = '../spectro_data/' + f[:-4] + '.pk'
-		extractSpectrograms.extractSpectrogram('../raw_audio/' + f, pickleFilePath)
-		toLMDB.toLMDB(pickleFilePath, LmdbfilePath)
+		spectrograms = extractSpectrograms.extractSpectrogram('../raw_audio/' + f, True)
+		if spectrograms != None:
+			toLMDB.toLMDB(spectrograms, LmdbfilePath)
+			batchSampleCount += 1
+
+	return batchSampleCount
 
 if __name__ == "__main__":
 	LmdbfilePath = sys.argv[1];
 	nbSamples = int(sys.argv[2]);
 	batchSize = int(sys.argv[3]);
 
-	for i in range(0, nbSamples / batchSize):
-		addTrainingSamples(LmdbfilePath, batchSize)
+	sampleCount = 0
+
+	while sampleCount < nbSamples:
+		sampleCount += addTrainingSamples(LmdbfilePath, batchSize)
+		print("--- sample count: " + str(sampleCount))

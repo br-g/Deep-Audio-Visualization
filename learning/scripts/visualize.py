@@ -25,7 +25,8 @@ def parse_log(log_file):
     with open(log_file, 'r') as log_file:
         log = log_file.read()
 
-    loss_pattern = r"l2_error = (?P<loss_val>[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?)"
+    #loss_pattern = r"l2_error = (?P<loss_val>[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?)"
+    loss_pattern = r"Test net output #0: l2_error = (?P<loss_val>[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?)"
     losses = []
     loss_iterations = []
 
@@ -38,6 +39,7 @@ def parse_log(log_file):
     loss_iterations = np.array(loss_iterations)
     losses = np.array(losses)
 
+    print(losses)
     return loss_iterations, losses
 
 

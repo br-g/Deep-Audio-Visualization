@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import sys
 import commands
 from random import randint, shuffle
+import params
 
 def downloadFromYouTube(outputPrefix, nbVideos):
     # Loads playlists
@@ -19,7 +20,7 @@ def downloadFromYouTube(outputPrefix, nbVideos):
     # Download music from various youtube playlists.
     # Audio only, best possible quality
     for i in range(0, int(nbVideos)):
-        print("--- download " + repr(i))
+        print("Download " + repr(i))
         try:
             playlistInd = randint(1,500)
             commands.getstatusoutput("youtube-dl \
