@@ -13,12 +13,12 @@ import random
 
 import params
 
-def toLMDB(pickleFilePath, outputFilePath):
-	spectrograms = pickle.load(open(pickleFilePath, "r"))
+def toLMDB(spectrograms, outputFilePath):
+	#spectrograms = pickle.load(open(pickleFilePath, "r"))
 	N = len(spectrograms)
 
-	# Sets map size to 20 GB
-	map_size = 20 * 1024 * 1024 * 1024
+	# Sets map size to 30 GB
+	map_size = 30 * 1024 * 1024 * 1024
 
 	env = lmdb.open(outputFilePath, map_size=map_size)
 
@@ -28,7 +28,7 @@ def toLMDB(pickleFilePath, outputFilePath):
 	        datum.channels = 1
 	        datum.height = 1
 	        datum.width = params.WINDOW_SIZE
-	        datum.data = spectrograms[i,:].tobytes()
+	        datum.data = spectrograms[i,:].tostring()
 	        #str_id = '{:08}'.format(i)
 	        str_id = '{:05}'.format(random.randint(1,99000))+'{:05}'.format(i) # shuffle data
 	        txn.put(str_id.encode('ascii'), datum.SerializeToString())

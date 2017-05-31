@@ -1,5 +1,5 @@
 ####
-# Extracts features from raw audio and export it in JSON
+# Extracts features from raw audio and exports it in JSON
 ###
 
 import numpy as np
@@ -10,14 +10,14 @@ from scipy.signal import spectrogram, resample
 import matplotlib
 import json
 import sys
-sys.path.insert(0, './data')
+import os
 import params
+import extractSpectrograms
 
 rawAudioPath = sys.argv[1]
 outFilePath = sys.argv[2]
 modelPath = sys.argv[3]
-musicTitle = sys.argv[4]
-musicArtist = sys.argv[5]
+snapshotPath = sys.argv[4]
 
 ####
 # Extracts spectrograms from raw audio
@@ -27,8 +27,11 @@ originalSampleFreq, audioData = wavfile.read(rawAudioPath)
 # If sample rate different from the standart one, resamples.
 if originalSampleFreq != params.SAMPLE_RATE:
 	print "Resampling..."
-	audioData = resample(audioData,
-		int(float(len(audioData)) * float(params.SAMPLE_RATE) / float(originalSampleFreq)))
+	#audioData = resample(audioData,
+	#	int(float(len(audioData)) * float(params.SAMPLE_RATE) / float(originalSampleFreq)))
+	newFilePath = rawAudioPath[:-4] + "_resamp.wav"
+	os.system("sox " + rawAudioPath + " -r " + str(params.SAMPLE_RATE) + " " + newFilePath)
+	originalSampleFreq, audioData = wavfile.read(newFilePath)
 
 audioData = audioData / (2.**15) # Map values into [-1, 1]
 step = int(params.SAMPLE_RATE / params.MAX_FPS)
@@ -36,11 +39,12 @@ spectrograms = np.empty((len(audioData) / step, params.WINDOW_SIZE))
 
 print "Extracting spectrogram..."
 for i in range(0, len(audioData) / step):
-	spectrograms[i,:] = abs( np.fft.fft(audioData[i*step:i*step+params.WINDOW_SIZE]) ) * 1000.
+	if i*step+params.WINDOW_SIZE <= len(audioData):
+		spectrograms[i,:] = abs( np.fft.fft(audioData[i*step:i*step+params.WINDOW_SIZE]) )
 
 
 ####
-# Runs the model and get features
+# Runs the model and gets features
 ###
 features = np.empty((len(audioData) / step, params.NB_FEATURES))
 
@@ -50,8 +54,8 @@ if params.USE_GPU:
 else:
     caffe.set_mode_cpu()
 
-net = caffe.Net('models/autoencoder.prototxt',
-                'snapshots/autoencoder__iter_50000.caffemodel',
+net = caffe.Net(modelPath,
+                snapshotPath,
                 caffe.TEST)
 
 
@@ -65,12 +69,15 @@ def netForward(batch):
 		batch = newBatch
 
 	net.blobs['data'].data[...] = np.reshape(batch, (params.BATCH_SIZE,1,1,params.WINDOW_SIZE))
-	return net.forward(end="encode2")['encode2'][0:initialBatchSize]
+	return net.forward(end="encode6")['encode6'][0:initialBatchSize]
 
 for i in range(0, len(spectrograms) / params.BATCH_SIZE):
 	startInd = i*params.BATCH_SIZE
 	endInd = startInd + params.BATCH_SIZE
 	features[startInd:endInd,:] = netForward(spectrograms[startInd:endInd,:])
+	print(features[startInd:endInd,:])
+	print(len(features))
+	print(len(features[0]))
 if len(spectrograms) % params.BATCH_SIZE > 0:
 	startInd = int(len(spectrograms)/params.BATCH_SIZE)*params.BATCH_SIZE
 	features[startInd:,:] = netForward(spectrograms[startInd:,:])
@@ -107,8 +114,6 @@ def exportJSON():
 		return featuresString
 
 	jsonString = "{"
-	jsonString += "\"Title\":" + json.dumps(musicTitle) + ","
-	jsonString += "\"Artist\":" + json.dumps(musicArtist) + ","
 	jsonString += "\"FPS\":\"" + str(params.MAX_FPS) + "\","
 	jsonString += "\"Features\":" + exportFeatures()
 	jsonString += "}"
