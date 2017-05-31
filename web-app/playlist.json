@@ -1,6 +1,7 @@
 {
 	"playlist": [
-		{ "title": "test titre", "artist": "Jean", "audioFilePath": "audio/m0_mono.wav", "featuresFilePath": "features/f1.json" },
-		{ "title": "Le petit Nanard", "artist": "Claude", "audioFilePath": "audio/m0_mono.wav", "featuresFilePath": "features/f1.json" }
+		{ "title": "Toccata and Fugue in D Minor", "artist": "Johann Sebastian Bach", "audioFilePath": "audio/Toccata.wav", "featuresFilePath": "features/toccata.json" },
+		{ "title": "Daybreak", "artist": "OVERWERK", "audioFilePath": "audio/OVERWERK.wav", "featuresFilePath": "features/overwerk.json" },
+		{ "title": "Strasbourg St Denis", "artist": "Roy Hargrove Quintet", "audioFilePath": "audio/Hargrove.wav", "featuresFilePath": "features/hargrove.json" }
 	]
 }
