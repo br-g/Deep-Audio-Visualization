@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Music visualization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/Deep-Audio-Visualization/web-app/style.css">
+
+    <!-- Libs -->
+    <script src="/Deep-Audio-Visualization/web-app/lib/jquery-3.2.1.min.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/lib/three.js"></script>
+
+    <!-- Cube -->
+    <script src="/Deep-Audio-Visualization/web-app/animations/cube/OrbitControls.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/animations/cube/Detector.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/animations/cube/main.js"></script>
+
+    <!-- Particles -->
+    <script src="/Deep-Audio-Visualization/web-app/animations/particles/TrackballControls.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/animations/particles/GPUParticleSystem.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/animations/particles/main.js"></script>
+
+    <script src="/Deep-Audio-Visualization/web-app/main.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/audio.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/features.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/playlist.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/paramMapping.js"></script>
+    <script src="/Deep-Audio-Visualization/web-app/animation.js"></script>
+  </head>
+  <body>
+    <div id='controls'>
+      <div id='songInfo'>
+        <div id='title'></div>
+        <div id='artist'></div>
+      </div>
+      <img id='next' title='Next song' src='next_button.png' />
+    </div>
+  </body>
+</html>
