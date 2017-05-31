@@ -11,4 +11,7 @@ function AudioManager () {
     	if (this.audio != null)
     		this.audio.pause();
     }
+    this.getElapsedTime = function() {
+        return this.audio.currentTime; // in s
+    }
 }
