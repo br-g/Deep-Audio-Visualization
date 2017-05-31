@@ -1,7 +1,7 @@
 {
 	"playlist": [
-		{ "title": "Toccata and Fugue in D Minor", "artist": "Johann Sebastian Bach", "audioFilePath": "https://bgodefroyfr.github.io/Autoencoders-Music-Visualization/web-app/audio/Toccata.wav", "featuresFilePath": "https://bgodefroyfr.github.io/Autoencoders-Music-Visualization/web-app/features/toccata.json" },
-		{ "title": "Daybreak", "artist": "OVERWERK", "audioFilePath": "https://bgodefroyfr.github.io/Autoencoders-Music-Visualization/web-app/audio/OVERWERK.wav", "featuresFilePath": "https://bgodefroyfr.github.io/Autoencoders-Music-Visualization/web-app/features/overwerk.json" },
-		{ "title": "Strasbourg St Denis", "artist": "Roy Hargrove Quintet", "audioFilePath": "https://bgodefroyfr.github.io/Autoencoders-Music-Visualization/web-app/audio/Hargrove.wav", "featuresFilePath": "https://bgodefroyfr.github.io/Autoencoders-Music-Visualization/web-app/features/hargrove.json" }
+		{ "title": "Toccata and Fugue in D Minor", "artist": "Johann Sebastian Bach", "audioFilePath": "https://bgodefroyfr.github.io/Autoencoders-Music-Visualization/web-app/audio/Toccata.wav", "featuresFilePath": "https://bgodefroyfr.github.io/Deep-Audio-Visualization/web-app/features/toccata.json" },
+		{ "title": "Daybreak", "artist": "OVERWERK", "audioFilePath": "https://bgodefroyfr.github.io/Autoencoders-Music-Visualization/web-app/audio/OVERWERK.wav", "featuresFilePath": "https://bgodefroyfr.github.io/Deep-Audio-Visualization/web-app/features/overwerk.json" },
+		{ "title": "Strasbourg St Denis", "artist": "Roy Hargrove Quintet", "audioFilePath": "https://bgodefroyfr.github.io/Autoencoders-Music-Visualization/web-app/audio/Hargrove.wav", "featuresFilePath": "https://bgodefroyfr.github.io/Deep-Audio-Visualization/web-app/features/hargrove.json" }
 	]
 }
