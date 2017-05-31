@@ -7,6 +7,7 @@ function AnimationManager() {
 	var startTime = 0;
 	var lastRenderTime = 0;
 	var curAnimName = null;
+	var audioManager = null;
 
 	this.init = function() {
 		var scene = new THREE.Scene();
@@ -36,6 +37,10 @@ function AnimationManager() {
 		}
 		loadParamMapping();
 		this.curAnimName = animName;
+	}
+
+	this.setAudioManager = function(_audioManager) {
+		audioManager = _audioManager;
 	}
 
 	this.nextAnimation = function() {
@@ -71,8 +76,8 @@ function AnimationManager() {
 	}
 
 	this.launch = function() {
-		startTime = new Date().getTime();
-		lastRenderTime = startTime;
+		startTime = 0;
+		lastRenderTime = 0;
 		renderAnimation();
 	}
 
@@ -83,8 +88,12 @@ function AnimationManager() {
 	function renderAnimation () {
 		requestAnimationFrame(renderAnimation);
 		renderer.render(ctx['scene'], ctx['camera']);
-		var curTime = new Date().getTime();
-		anim.update((curTime - lastRenderTime) / 1000.0, paramMapping.doMap(features.get(curTime - startTime), curTime - lastRenderTime));
-		lastRenderTime = curTime;
+		//var curTime = new Date().getTime();
+		var curTime = audioManager.getElapsedTime() * 1000.0;
+		console.log(curTime - lastRenderTime);
+		if (curTime > 0) {
+			anim.update((curTime - lastRenderTime) / 1000.0, paramMapping.doMap(features.get(curTime - startTime), curTime - lastRenderTime));
+			lastRenderTime = curTime;
+		}
 	}
 };

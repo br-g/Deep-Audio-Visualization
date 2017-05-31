@@ -29,7 +29,7 @@ function App () {
 		var nextSong = this.playlistManager.nextSong();
 		this.audioManager.pauseMusic();
 		this.audioManager.load(this.playlistManager.getAudioPath());
-		this.audioManager.load(this.playlistManager.getAudioPath());
+		this.animationManager.setAudioManager(this.audioManager);
 		this.animationManager.loadFeatures(this.playlistManager.getFeaturesPath());
 		this.animationManager.launch();
 		this.audioManager.playMusic();
