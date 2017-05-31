@@ -1,12 +1,23 @@
 // Represents an animation parameter (position, color, speed, ...)
-var Parameter = function (name, minValue, maxValue) {
+var Parameter = function (name, minValue, maxValue, step, FPS) {
 	this.name = name;
 	this.minValue = minValue;
 	this.maxValue = maxValue;
+	this.step = step;
+	this.FPS = FPS;
+
+	this.timeAcc = 0;
+	this.curOutput = null;
 	
 	// Scales input value ([0;1]) into [minValue;maxValue].
-	this.scale = function (input) {
-		return input * (this.maxValue - this.minValue) + this.minValue;
+	this.scale = function (input, timeElapsed) {
+		if (this.timeAcc / 1000.0 > 1.0 / this.FPS || this.curOutput == null) {
+			this.curOutput = Math.round((input * (this.maxValue - this.minValue) + this.minValue) / step) * step;
+			this.timeAcc = 0;
+		} else {
+			this.timeAcc += timeElapsed;
+		}
+		return this.curOutput;
 	}
 }
 
@@ -34,7 +45,10 @@ var ParamMapping = function(size, params, map) {
 		    	params.push(new Parameter(
 		    		data['parameters'][i]['name'],
 		    		data['parameters'][i]['min'],
-		    		data['parameters'][i]['max']));
+		    		data['parameters'][i]['max'],
+		    		data['parameters'][i]['step'],
+		    		data['parameters'][i]['FPS'])
+		    	);
 		    	map.push(i);
 		    }
 	      }
@@ -57,14 +71,14 @@ var ParamMapping = function(size, params, map) {
 	}
 
 	// Given some input features, provides a suitable mapping for the animation parameters.
-	this.doMap = function (features) {
+	this.doMap = function (features, timeElapsed) {
 		var parameters = [];
 		if (features.length !== this.size) {
 			console.log("Warning: features vector size and number of animation parameters are different.");
 		}
 		var parameters = {};
 		for (var i = 0; i < this.size; i++) {
-			parameters[this.params[i].name] = this.params[i].scale(features[this.map[i]]);
+			parameters[this.params[i].name] = this.params[i].scale(features[this.map[i]], timeElapsed);
 		}
 		return parameters;
 	}

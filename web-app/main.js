@@ -7,7 +7,7 @@ function App () {
 		this.audioManager = new AudioManager();
 		this.animationManager = new AnimationManager();
 		this.animationManager.init();
-		this.setAnimation('particles');
+		this.animationManager.nextAnimation();
 		this.playlistManager = new PlaylistManager();
 	}
 
@@ -20,14 +20,19 @@ function App () {
     	this.animationManager.setAnimation(animName);
     }
 
+    this.nextAnimation = function() {
+    	this.animationManager.nextAnimation();
+    	this.randomizeAnimation();
+    }
+
 	this.playNextSong = function () {
 		var nextSong = this.playlistManager.nextSong();
 		this.audioManager.pauseMusic();
 		this.audioManager.load(this.playlistManager.getAudioPath());
 		this.audioManager.load(this.playlistManager.getAudioPath());
 		this.animationManager.loadFeatures(this.playlistManager.getFeaturesPath());
-		this.audioManager.playMusic();
 		this.animationManager.launch();
+		this.audioManager.playMusic();
 	}
 
 	this.randomizeAnimation = function () {
@@ -53,6 +58,6 @@ $(document).ready(function() {
 	});
 
 	$("canvas").click(function() {
-	  app.randomizeAnimation();
+	  app.nextAnimation();
 	});
 });

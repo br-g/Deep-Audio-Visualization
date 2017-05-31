@@ -6,6 +6,7 @@ function AnimationManager() {
 	var paramMapping = null;
 	var startTime = 0;
 	var lastRenderTime = 0;
+	var curAnimName = null;
 
 	this.init = function() {
 		var scene = new THREE.Scene();
@@ -27,8 +28,30 @@ function AnimationManager() {
 			default:
 				console.log('Error: Unknow animation name.');
 		}
-		if (anim) anim.init(ctx);
+		if (anim) {
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+			ctx = {'scene': scene, 'camera': camera}
+			anim.init(ctx);
+		}
 		loadParamMapping();
+		this.curAnimName = animName;
+	}
+
+	this.nextAnimation = function() {
+		if (this.curAnimName == null) {
+			this.curAnimName = 'cube';
+		}
+		switch (this.curAnimName) {
+			case 'cube':
+				this.setAnimation('particles');
+				break;
+			case 'particles':
+				this.setAnimation('cube');
+				break;
+			default:
+				console.log('Error: Unknow animation name.');
+		}
 	}
 
 	this.loadFeatures = function(filePath) {
@@ -61,8 +84,7 @@ function AnimationManager() {
 		requestAnimationFrame(renderAnimation);
 		renderer.render(ctx['scene'], ctx['camera']);
 		var curTime = new Date().getTime();
-		console.log(features.get(curTime - startTime))
-		anim.update((curTime - lastRenderTime) / 1000.0, paramMapping.doMap(features.get(curTime - startTime)));
+		anim.update((curTime - lastRenderTime) / 1000.0, paramMapping.doMap(features.get(curTime - startTime), curTime - lastRenderTime));
 		lastRenderTime = curTime;
 	}
 };
