@@ -90,7 +90,6 @@ function AnimationManager() {
 		renderer.render(ctx['scene'], ctx['camera']);
 		//var curTime = new Date().getTime();
 		var curTime = audioManager.getElapsedTime() * 1000.0;
-		console.log(curTime - lastRenderTime);
 		if (curTime > 0) {
 			anim.update((curTime - lastRenderTime) / 1000.0, paramMapping.doMap(features.get(curTime - startTime), curTime - lastRenderTime));
 			lastRenderTime = curTime;

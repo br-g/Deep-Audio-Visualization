@@ -1,14 +1,14 @@
 {
 	"parameters": [
-		{ "name": "velocityRandomness", "min": 0.0, "max": 3.0, "step": 0.5, "FPS": 2.0 },
-		{ "name": "positionRandomness", "min": 0.0, "max": 3.0, "step": 0.5, "FPS": 3.0 },
-		{ "name": "size", "min": 1.0, "max": 20.0, "step": 5.0, "FPS": 5.0 },
-		{ "name": "sizeRandomness", "min": 0.0, "max": 25.0, "step": 5.0, "FPS": 0.1 },
-		{ "name": "colorRandomness", "min": 0.0, "max": 1.0, "step": 0.3, "FPS": 0.1 },
-		{ "name": "velocityRandomness", "min": 0.0, "max": 3.0, "step": 0.8, "FPS": 3.0 },
-		{ "name": "lifetime", "min": 0.1, "max": 4.0, "step": 0.2, "FPS": 3.0 },
-		{ "name": "turbulence", "min": 0.0, "max": 1.0, "step": 0.1, "FPS": 1.0 },
-		{ "name": "spawnRate", "min": 10.0, "max": 1000.0, "step": 100, "FPS": 3.0 },
-		{ "name": "timeScale", "min": 0.0, "max": 1.0, "step": 0.3, "FPS": 1.0 }
+		{ "name": "velocityRandomness", "avg": 1.1, "min": 0.0, "max": 3.0, "step": 0.001, "FPS": 100.0 },
+		{ "name": "positionRandomness", "avg": 0.75, "min": 0.0, "max": 3.0, "step": 0.001, "FPS": 100.0 },
+		{ "name": "size", "avg": 3.7, "min": 1.0, "max": 20.0, "step": 0.001, "FPS": 100.0 },
+		{ "name": "sizeRandomness", "avg": 2.0, "min": 0.0, "max": 25.0, "step": 0.001, "FPS": 100.0 },
+		{ "name": "colorRandomness", "avg": 0.2, "min": 0.0, "max": 1.0, "step": 0.001, "FPS": 100.0 },
+		{ "name": "lifetime", "avg": 1.9, "min": 0.1, "max": 4.0, "step": 0.001, "FPS": 100.0 },
+		{ "name": "turbulence", "avg": 0.3, "min": 0.0, "max": 1.0, "step": 0.001, "FPS": 100.0 },
+		{ "name": "spawnRate", "avg": 13000, "min": 10.0, "max": 30000.0, "step": 0.001, "FPS": 100.0 },
+		{ "name": "timeScale", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.001, "FPS": 100.0 },
+		{ "name": "empty", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.001, "FPS": 100.0 }
 	]
 }

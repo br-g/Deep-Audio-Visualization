@@ -1,6 +1,7 @@
 // Represents an animation parameter (position, color, speed, ...)
-var Parameter = function (name, minValue, maxValue, step, FPS) {
+var Parameter = function (name, avg, minValue, maxValue, step, FPS) {
 	this.name = name;
+	this.avg = avg;
 	this.minValue = minValue;
 	this.maxValue = maxValue;
 	this.step = step;
@@ -12,7 +13,15 @@ var Parameter = function (name, minValue, maxValue, step, FPS) {
 	// Scales input value ([0;1]) into [minValue;maxValue].
 	this.scale = function (input, timeElapsed) {
 		if (this.timeAcc / 1000.0 > 1.0 / this.FPS || this.curOutput == null) {
-			this.curOutput = Math.round((input * (this.maxValue - this.minValue) + this.minValue) / step) * step;
+
+			//this.curOutput = Math.round((input * (this.maxValue - this.minValue) + this.minValue) / step) * step;
+			if (input < 0.5) {
+				this.curOutput = input / 0.5 * (this.avg - this.minValue);
+			} else {
+				this.curOutput = (input - 0.5) / 0.5 * (this.maxValue - this.avg) + this.avg;
+			}
+			this.curOutput = Math.round(this.curOutput / step) * step;
+
 			this.timeAcc = 0;
 		} else {
 			this.timeAcc += timeElapsed;
@@ -44,6 +53,7 @@ var ParamMapping = function(size, params, map) {
 		    for (i = 0; i < size; i++) {
 		    	params.push(new Parameter(
 		    		data['parameters'][i]['name'],
+		    		data['parameters'][i]['avg'],
 		    		data['parameters'][i]['min'],
 		    		data['parameters'][i]['max'],
 		    		data['parameters'][i]['step'],
