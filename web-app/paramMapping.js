@@ -1,10 +1,11 @@
 // Represents an animation parameter (position, color, speed, ...)
-var Parameter = function (name, avg, minValue, maxValue, step, FPS) {
+var Parameter = function (name, avg, minValue, maxValue, step, _default, FPS) {
 	this.name = name;
 	this.avg = avg;
 	this.minValue = minValue;
 	this.maxValue = maxValue;
 	this.step = step;
+	this.default = _default;
 	this.FPS = FPS;
 
 	this.timeAcc = 0;
@@ -13,8 +14,7 @@ var Parameter = function (name, avg, minValue, maxValue, step, FPS) {
 	// Scales input value ([0;1]) into [minValue;maxValue].
 	this.scale = function (input, timeElapsed) {
 		if (this.timeAcc / 1000.0 > 1.0 / this.FPS || this.curOutput == null) {
-
-			//this.curOutput = Math.round((input * (this.maxValue - this.minValue) + this.minValue) / step) * step;
+			input = Math.pow(input+0.5, 2) / 2.25;
 			if (input < 0.5) {
 				this.curOutput = input / 0.5 * (this.avg - this.minValue);
 			} else {
@@ -57,6 +57,7 @@ var ParamMapping = function(size, params, map) {
 		    		data['parameters'][i]['min'],
 		    		data['parameters'][i]['max'],
 		    		data['parameters'][i]['step'],
+		    		data['parameters'][i]['default'],
 		    		data['parameters'][i]['FPS'])
 		    	);
 		    	map.push(i);
@@ -91,5 +92,9 @@ var ParamMapping = function(size, params, map) {
 			parameters[this.params[i].name] = this.params[i].scale(features[this.map[i]], timeElapsed);
 		}
 		return parameters;
+	}
+
+	this.doMapDefault = function () {
+		return this._default;
 	}
 }
