@@ -4,10 +4,11 @@ function AnimationManager() {
 	var renderer = null;
 	var features = null;
 	var paramMapping = null;
-	var startTime = 0;
 	var lastRenderTime = 0;
 	var curAnimName = null;
 	var audioManager = null;
+
+	var SYNC_CONSTANT = 15.0; // ms
 
 	this.init = function() {
 		var scene = new THREE.Scene();
@@ -37,6 +38,7 @@ function AnimationManager() {
 		}
 		loadParamMapping();
 		this.curAnimName = animName;
+		this.randomize();
 	}
 
 	this.setAudioManager = function(_audioManager) {
@@ -76,7 +78,6 @@ function AnimationManager() {
 	}
 
 	this.launch = function() {
-		startTime = 0;
 		lastRenderTime = 0;
 		renderAnimation();
 	}
@@ -88,11 +89,16 @@ function AnimationManager() {
 	function renderAnimation () {
 		requestAnimationFrame(renderAnimation);
 		renderer.render(ctx['scene'], ctx['camera']);
-		//var curTime = new Date().getTime();
 		var curTime = audioManager.getElapsedTime() * 1000.0;
 		if (curTime > 0) {
-			anim.update((curTime - lastRenderTime) / 1000.0, paramMapping.doMap(features.get(curTime - startTime), curTime - lastRenderTime));
+			anim.update((curTime - lastRenderTime) / 1000.0, 
+				paramMapping.doMap(features.get(audioManager.getElapsedTime() * 1000.0 + SYNC_CONSTANT), 
+				curTime - lastRenderTime));
 			lastRenderTime = curTime;
+		} else if (audioManager.ended()) {
+			anim.update((curTime - lastRenderTime) / 1000.0, 
+				paramMapping.doMapDefault(), 
+				curTime - lastRenderTime);
 		}
 	}
 };

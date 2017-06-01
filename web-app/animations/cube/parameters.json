@@ -1,14 +1,14 @@
 {
 	"parameters": [
-		{ "name": "influence1", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "FPS": 5.0 },
-		{ "name": "influence2", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "FPS": 5.0 },
-		{ "name": "influence3", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "FPS": 5.0 },
-		{ "name": "influence4", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "FPS": 5.0 },
-		{ "name": "influence5", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "FPS": 5.0 },
-		{ "name": "influence6", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "FPS": 5.0 },
-		{ "name": "influence7", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "FPS": 5.0 },
-		{ "name": "influence8", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "FPS": 5.0 },
-		{ "name": "rotation", "avg": 0.0, "min": -0.02, "max": 0.02, "step": 0.005, "FPS": 5.0 },
-		{ "name": "nothing2", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.2, "FPS": 2.0 }
+		{ "name": "influence1", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "default": 0.0, "FPS": 5.0 },
+		{ "name": "influence2", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "default": 0.0, "FPS": 5.0 },
+		{ "name": "influence3", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "default": 0.0, "FPS": 5.0 },
+		{ "name": "influence4", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "default": 0.0, "FPS": 5.0 },
+		{ "name": "influence5", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "default": 0.0, "FPS": 5.0 },
+		{ "name": "influence6", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "default": 0.0, "FPS": 5.0 },
+		{ "name": "influence7", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "default": 0.0, "FPS": 5.0 },
+		{ "name": "influence8", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.4, "default": 0.0, "FPS": 5.0 },
+		{ "name": "rotation", "avg": 0.0, "min": -0.02, "max": 0.02, "step": 0.005, "default": 0.0, "FPS": 5.0 },
+		{ "name": "nothing2", "avg": 0.5, "min": 0.0, "max": 1.0, "step": 0.2, "default": 0.0, "FPS": 2.0 }
 	]
 }
