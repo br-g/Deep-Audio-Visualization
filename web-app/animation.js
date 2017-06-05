@@ -27,6 +27,9 @@ function AnimationManager() {
 			case 'particles':
 				anim = new Particles();
 				break;
+			case 'sphere':
+				anim = new Sphere();
+				break;
 			default:
 				console.log('Error: Unknow animation name.');
 		}
@@ -34,7 +37,7 @@ function AnimationManager() {
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 			ctx = {'scene': scene, 'camera': camera}
-			anim.init(ctx);
+			anim.init(ctx, renderer);
 		}
 		loadParamMapping();
 		this.curAnimName = animName;
@@ -47,14 +50,14 @@ function AnimationManager() {
 
 	this.nextAnimation = function() {
 		if (this.curAnimName == null) {
-			this.curAnimName = 'cube';
+			this.curAnimName = 'sphere';
 		}
 		switch (this.curAnimName) {
-			case 'cube':
+			case 'sphere':
 				this.setAnimation('particles');
 				break;
 			case 'particles':
-				this.setAnimation('cube');
+				this.setAnimation('sphere');
 				break;
 			default:
 				console.log('Error: Unknow animation name.');

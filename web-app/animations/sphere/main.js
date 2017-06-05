@@ -1,0 +1,163 @@
+/***************************************************/
+/* Animation using the "Particulate.js" library.
+/* Inspired from one of its example.
+/*
+/* https://particulatejs.org
+/***************************************************/
+
+function Sphere() {
+
+	this.simulation = null;
+	this.composer = null;
+	this.lines = null;
+	this.renderer = null;
+	this.visParticles = null;
+	this.visConnectors = null;
+	this.bounds = null;
+	this.distances = null;
+
+	this.dots = null;
+	this.texture = null;
+
+	this.getPath = function () {
+		return 'animations/sphere';
+	}
+
+	this.init = function (ctx, renderer) {
+
+		//*********************/
+		// Init scene
+		//*********************/
+		ctx['scene'].fog = new THREE.Fog(0x050505, 1, 200);
+		ctx['camera'] = new THREE.PerspectiveCamera(30, 1, 5, 3500);
+		ctx['camera'].position.set(0, 50, 100);
+		ctx['camera'].lookAt(ctx['scene'].position);
+
+
+		//*********************/
+		// Init simulation
+		//*********************/
+		var tris = 2000;
+		var particles = tris * 3;
+		var distance = 1.5;
+		simulation = Particulate.ParticleSystem.create(particles, 2);
+
+		this.bounds = Particulate.PointForce.create([0, 0, 0], {
+			type : Particulate.Force.ATTRACTOR_REPULSOR,
+			intensity : 0.05,
+			radius : 15.0
+		});
+
+		var linkIndices = [];
+		var visIndices = [];
+		(function () {
+		var a, b, c;
+		for (var i = 2, il = particles; i < il; i ++) {
+		  a = i;
+		  b = a - 1;
+		  c = a - 2;
+		  linkIndices.push(a, b, b, c, c, a);
+		  visIndices.push(a);
+		}
+		}());
+
+		simulation.each(function (i) {
+			simulation.setPosition(i,
+			  (Math.random() - 0.5) * 10,
+			  (Math.random() - 0.5) * 10,
+			  (Math.random() - 0.5) * 10);
+		});
+
+		this.distances = Particulate.DistanceConstraint.create([distance * 0.5, distance], linkIndices);
+
+		simulation.addConstraint(this.distances);
+		simulation.addForce(this.bounds);
+
+		(function relax() {
+			for (var i = 0; i < 50; i ++) {
+			  this.simulation.tick(1);
+			}
+		}());
+
+		this.simulation = simulation;
+
+
+		//*********************/
+		// Init visualization
+		//*********************/
+		var vertices = new THREE.BufferAttribute(this.simulation.positions, 3);
+		var indices = new THREE.BufferAttribute(new Uint16Array(visIndices), 1);
+
+		// Particles
+		this.texture = THREE.ImageUtils.loadTexture(this.getPath() + '/particle.png');
+		this.dots = new THREE.BufferGeometry();
+		this.dots.addAttribute('position', vertices);
+
+		this.visParticles = new THREE.PointCloud(this.dots,
+			new THREE.PointCloudMaterial({
+			  color : "0x000000",
+			  blending : THREE.AdditiveBlending,
+			  transparent : true,
+			  map : this.texture,
+			  size : 1.5,
+			  opacity : 0.9,
+			}));
+
+		// Connections
+		this.lines = new THREE.BufferGeometry();
+		this.lines.addAttribute('position', vertices);
+		this.lines.addAttribute('index', indices);
+
+		this.visConnectors = new THREE.Line(this.lines,
+			new THREE.LineBasicMaterial({
+			  blending : THREE.AdditiveBlending,
+			  transparent : true,
+			  color : "0x000000",
+			  linewidth : 1,
+			  opacity : 0.5
+			}));
+
+		ctx['scene'].add(this.visParticles);
+		ctx['scene'].add(this.visConnectors);
+
+
+		//*********************/
+		// Init renderer
+		//*********************/
+		renderer.autoClear = false;
+		renderer.setClearColor(0x050505, 1);
+		
+
+		//*********************/
+		// Init post FX
+		//*********************/
+		this.composer = new THREE.EffectComposer(renderer);
+		var renderScene = new THREE.RenderPass(ctx['scene'], ctx['camera']);
+		var bloom = new THREE.BloomPass(1.2);
+		var copy = new THREE.ShaderPass(THREE.CopyShader);
+
+		copy.renderToScreen = true;
+
+		this.composer.addPass(renderScene);
+		this.composer.addPass(bloom);
+		this.composer.addPass(copy);
+	}
+
+	this.update = function (timeDelta, parameters) {
+
+		//var color = "0xffff" + parameters.red.toString(16) + "";
+		var color = parameters.red.toString() + ", " + parameters.green.toString() + ", " + parameters.blue.toString();
+		this.visParticles.material.color = new THREE.Color( "rgb(" + color + ")" );
+		this.visConnectors.material.color = new THREE.Color( "rgb(" + color + ")" );
+
+		console.log(color);
+
+
+		this.distances.setDistance(parameters.edgesDistance);
+		this.simulation.setWeights(parameters.particlesWeight);
+
+		this.composer.render(0.1);
+		this.simulation.tick(0.5);
+		this.lines.attributes.position.needsUpdate = true;
+	}
+}
