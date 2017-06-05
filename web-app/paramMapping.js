@@ -16,9 +16,9 @@ var Parameter = function (name, avg, minValue, maxValue, step, _default, FPS) {
 		if (this.timeAcc / 1000.0 > 1.0 / this.FPS || this.curOutput == null) {
 			input = Math.pow(input+0.5, 2) / 2.25;
 			if (input < 0.5) {
-				this.curOutput = input / 0.5 * (this.avg - this.minValue);
+				this.curOutput = input * 2.0 * (this.minValue - this.avg) + this.avg;
 			} else {
-				this.curOutput = (input - 0.5) / 0.5 * (this.maxValue - this.avg) + this.avg;
+				this.curOutput = (input - 0.5) * 2.0 * (this.maxValue - this.avg) + this.avg;
 			}
 			this.curOutput = Math.round(this.curOutput / step) * step;
 
