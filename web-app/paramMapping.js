@@ -10,23 +10,44 @@ var Parameter = function (name, avg, minValue, maxValue, step, _default, FPS) {
 
 	this.timeAcc = 0;
 	this.curOutput = null;
-	
-	// Scales input value ([0;1]) into [minValue;maxValue].
-	this.scale = function (input, timeElapsed) {
-		if (this.timeAcc / 1000.0 > 1.0 / this.FPS || this.curOutput == null) {
-			input = Math.pow(input+0.5, 2) / 2.25;
-			if (input < 0.5) {
-				this.curOutput = input * 2.0 * (this.minValue - this.avg) + this.avg;
-			} else {
-				this.curOutput = (input - 0.5) * 2.0 * (this.maxValue - this.avg) + this.avg;
-			}
-			this.curOutput = Math.round(this.curOutput / step) * step;
 
-			this.timeAcc = 0;
+	this.nbAccumulatedValues = 0;
+	this.accumulatedValues = [];
+
+	// Stores current frame value and returns value averaged over time.
+	this.getAveragedValue = function (curVal) {
+		var curDate = new Date().getTime();
+		var minDate = curDate - (1.0 / this.FPS * 1000); 
+		var sum = 0.0;
+		var nbToRemove = 0;
+
+		this.accumulatedValues.forEach (function (v) {
+			if (v.date >= minDate) {
+				sum += v.value;
+			} else {
+				nbToRemove ++;
+			}
+		});
+		this.accumulatedValues.splice(0, nbToRemove);
+		this.accumulatedValues.push({'date': curDate, 'value': curVal});
+		this.nbAccumulatedValues -= (nbToRemove - 1);
+
+		return (sum + curVal) / this.nbAccumulatedValues;
+	}
+
+	// Scales input value ([0;1]) into [minValue;maxValue].
+	// Takes into account FPS limitation requirements.
+	this.scale = function (input, timeElapsed) {
+
+		// Computes mapped value
+		var mappedValue = 0.0;
+		input = Math.pow(input+0.5, 2) / 2.25; // quadratic mapping
+		if (input < 0.5) {
+			mappedValue = input * 2.0 * (this.minValue - this.avg) + this.avg;
 		} else {
-			this.timeAcc += timeElapsed;
+			mappedValue = (input - 0.5) * 2.0 * (this.maxValue - this.avg) + this.avg;
 		}
-		return this.curOutput;
+		return Math.round(this.getAveragedValue(mappedValue) / step) * step;
 	}
 }
 
