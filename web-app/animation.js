@@ -94,14 +94,17 @@ function AnimationManager() {
 		renderer.render(ctx['scene'], ctx['camera']);
 		var curTime = audioManager.getElapsedTime() * 1000.0;
 		if (curTime > 0) {
-			anim.update((curTime - lastRenderTime) / 1000.0, 
-				paramMapping.doMap(features.get(audioManager.getElapsedTime() * 1000.0 + SYNC_CONSTANT), 
-				curTime - lastRenderTime));
+			if (audioManager.ended()) {
+				anim.update((curTime - lastRenderTime) / 1000.0, 
+					paramMapping.doMapDefault(), 
+					curTime - lastRenderTime);
+				app.playNextSong();
+			} else {
+				anim.update((curTime - lastRenderTime) / 1000.0, 
+					paramMapping.doMap(features.get(audioManager.getElapsedTime() * 1000.0 + SYNC_CONSTANT), 
+					curTime - lastRenderTime));
+			}
 			lastRenderTime = curTime;
-		} else if (audioManager.ended()) {
-			anim.update((curTime - lastRenderTime) / 1000.0, 
-				paramMapping.doMapDefault(), 
-				curTime - lastRenderTime);
 		}
 	}
 };
