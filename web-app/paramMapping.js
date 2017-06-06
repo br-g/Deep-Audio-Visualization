@@ -104,7 +104,6 @@ var ParamMapping = function(size, params, map) {
 
 	// Given some input features, provides a suitable mapping for the animation parameters.
 	this.doMap = function (features, timeElapsed) {
-		var parameters = [];
 		if (features.length !== this.size) {
 			console.log("Warning: features vector size and number of animation parameters are different.");
 		}
@@ -116,6 +115,10 @@ var ParamMapping = function(size, params, map) {
 	}
 
 	this.doMapDefault = function () {
-		return this._default;
+		var parameters = {};
+		for (var i = 0; i < this.size; i++) {
+			parameters[this.params[i].name] = this.params[i].default;
+		}
+		return parameters;
 	}
 }

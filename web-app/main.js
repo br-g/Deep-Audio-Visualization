@@ -33,28 +33,28 @@ function App () {
 		this.animationManager.loadFeatures(this.playlistManager.getFeaturesPath());
 		this.animationManager.launch();
 		this.audioManager.playMusic();
+		this.updateSongInfo();
 	}
 
 	this.randomizeAnimation = function () {
 		this.animationManager.randomize();
 	}
+
+	this.updateSongInfo = function () {
+		$("#controls > #songInfo > #title").html(this.playlistManager.getTitle());
+		$("#controls > #songInfo > #artist").html(this.playlistManager.getArtist());
+	}
 }
 
+var app = new App();
+
 $(document).ready(function() {
-	var app = new App();
 	app.init();
 	app.loadPlaylist('playlist.json');
 	app.playNextSong();
 
-	function updateSongInfo() {
-		$("#controls > #songInfo > #title").html(app.playlistManager.getTitle());
-		$("#controls > #songInfo > #artist").html(app.playlistManager.getArtist());
-	}
-
-	updateSongInfo();
 	$("#controls > #next").click(function() {
 	  app.playNextSong();
-	  updateSongInfo();
 	});
 
 	$("canvas").click(function() {
