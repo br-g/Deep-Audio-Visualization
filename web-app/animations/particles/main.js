@@ -7,7 +7,7 @@ function Particles() {
 		return 'animations/particles';
 	}
 
-	this.init = function (ctx) {
+	this.init = function (ctx, renderer) {
 		ctx['camera'].position.z = 33;
 		particleSystem = new THREE.GPUParticleSystem({
 			maxParticles: 250000

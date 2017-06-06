@@ -145,13 +145,9 @@ function Sphere() {
 
 	this.update = function (timeDelta, parameters) {
 
-		//var color = "0xffff" + parameters.red.toString(16) + "";
 		var color = parameters.red.toString() + ", " + parameters.green.toString() + ", " + parameters.blue.toString();
 		this.visParticles.material.color = new THREE.Color( "rgb(" + color + ")" );
 		this.visConnectors.material.color = new THREE.Color( "rgb(" + color + ")" );
-
-		console.log(color);
-
 
 		this.distances.setDistance(parameters.edgesDistance);
 		this.simulation.setWeights(parameters.particlesWeight);
