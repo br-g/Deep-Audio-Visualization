@@ -21,8 +21,8 @@ function AnimationManager() {
 
 	this.setAnimation = function(animName) {
 		switch (animName) {
-			case 'cube':
-				anim = new Cube();
+			case 'kaleidoscope':
+				anim = new Kaleidoscope();
 				break;
 			case 'particles':
 				anim = new Particles();
@@ -57,6 +57,9 @@ function AnimationManager() {
 				this.setAnimation('particles');
 				break;
 			case 'particles':
+				this.setAnimation('kaleidoscope');
+				break;
+			case 'kaleidoscope':
 				this.setAnimation('sphere');
 				break;
 			default:
