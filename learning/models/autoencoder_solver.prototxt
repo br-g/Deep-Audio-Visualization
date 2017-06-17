@@ -1,17 +1,17 @@
 net: "models/autoencoder.prototxt"
 test_state: { stage: 'test-on-train' }
 test_iter: 100
-test_interval: 100
+test_interval: 1000000
 test_compute_loss: true
 base_lr: 0.0000001
 lr_policy: "step"
 gamma: 0.1
 stepsize: 10000000
 display: 100
-max_iter: 10000000
+max_iter: 2000
 weight_decay: 0.0005
 snapshot: 1000
-snapshot_prefix: "snapshots/second_4096_"
+snapshot_prefix: "snapshots/data8_"
 momentum: 0.9
 solver_mode: GPU
 type: "SGD"
