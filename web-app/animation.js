@@ -8,11 +8,11 @@ function AnimationManager() {
 	var curAnimName = null;
 	var audioManager = null;
 
-	var SYNC_CONSTANT = 15.0; // ms
+	var SYNC_CONSTANT = 200.0; // ms
 
 	this.init = function() {
 		var scene = new THREE.Scene();
-		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+		var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 3000);
 		ctx = {'scene': scene, 'camera': camera}
 		renderer = new THREE.WebGLRenderer();
 		renderer.setSize(window.innerWidth, window.innerHeight);
@@ -50,7 +50,7 @@ function AnimationManager() {
 
 	this.nextAnimation = function() {
 		if (this.curAnimName == null) {
-			this.curAnimName = 'sphere';
+			this.curAnimName = 'kaleidoscope';
 		}
 		switch (this.curAnimName) {
 			case 'sphere':
