@@ -49,16 +49,25 @@ function App () {
 var app = new App();
 
 $(document).ready(function() {
+	setTimeout(hideStartMessage, 5000);
+
 	app.init();
 	app.loadPlaylist('playlist.json');
 	app.playNextSong();
 	app.animationManager.launch();
 
 	$("#controls > #next").click(function() {
-	  app.playNextSong();
+		app.playNextSong();
 	});
 
 	$("canvas").click(function() {
-	  app.nextAnimation();
+		hideStartMessage();
+	  	app.nextAnimation();
 	});
 });
+
+function hideStartMessage() {
+	$("#startMessage").animate({
+	    opacity: 0.0
+	  }, 1400);
+}
