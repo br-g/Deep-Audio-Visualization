@@ -50,7 +50,7 @@ function AnimationManager() {
 
 	this.nextAnimation = function() {
 		if (this.curAnimName == null) {
-			this.curAnimName = 'kaleidoscope';
+			this.curAnimName = 'sphere';
 		}
 		switch (this.curAnimName) {
 			case 'sphere':
