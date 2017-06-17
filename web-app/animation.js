@@ -52,17 +52,17 @@ function AnimationManager() {
 
 	this.nextAnimation = function() {
 		if (this.curAnimName == null) {
-			this.curAnimName = 'sphere';
+			this.curAnimName = 'particles';
 		}
 		switch (this.curAnimName) {
-			case 'sphere':
-				this.setAnimation('particles');
-				break;
 			case 'particles':
+				this.setAnimation('sphere');
+				break;
+			case 'sphere':
 				this.setAnimation('kaleidoscope');
 				break;
 			case 'kaleidoscope':
-				this.setAnimation('sphere');
+				this.setAnimation('particles');
 				break;
 			default:
 				console.log('Error: Unknow animation name.');
