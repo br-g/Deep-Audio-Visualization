@@ -31,7 +31,7 @@ function App () {
 		this.audioManager.load(this.playlistManager.getAudioPath());
 		this.animationManager.setAudioManager(this.audioManager);
 		this.animationManager.loadFeatures(this.playlistManager.getFeaturesPath());
-		this.animationManager.launch();
+		//this.animationManager.launch();
 		this.audioManager.playMusic();
 		this.updateSongInfo();
 	}
@@ -52,6 +52,7 @@ $(document).ready(function() {
 	app.init();
 	app.loadPlaylist('playlist.json');
 	app.playNextSong();
+	app.animationManager.launch();
 
 	$("#controls > #next").click(function() {
 	  app.playNextSong();

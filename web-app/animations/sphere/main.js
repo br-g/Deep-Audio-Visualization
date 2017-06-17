@@ -30,7 +30,7 @@ function Sphere() {
 		//*********************/
 		ctx['scene'].fog = new THREE.Fog(0x050505, 1, 200);
 		//ctx['camera'] = new THREE.PerspectiveCamera(30, 1, 5, 3500);
-		ctx['camera'].position.set(0, 50, -20);
+		ctx['camera'].position.set(0, 50, -40);
 		ctx['camera'].lookAt(ctx['scene'].position);
 
 
