@@ -8,15 +8,19 @@ function AnimationManager() {
 	var curAnimName = null;
 	var audioManager = null;
 
-	var SYNC_CONSTANT = 200.0; // ms
+	var SYNC_CONSTANT = 240.0; // ms
 
 	this.init = function() {
-		var scene = new THREE.Scene();
-		var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 3000);
-		ctx = {'scene': scene, 'camera': camera}
+		this.createSceneAndCamera();
 		renderer = new THREE.WebGLRenderer();
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(renderer.domElement);
+	}
+
+	this.createSceneAndCamera = function () {
+		var scene = new THREE.Scene();
+		var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+		ctx = {'scene': scene, 'camera': camera}
 	}
 
 	this.setAnimation = function(animName) {
@@ -34,9 +38,7 @@ function AnimationManager() {
 				console.log('Error: Unknow animation name.');
 		}
 		if (anim) {
-			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-			ctx = {'scene': scene, 'camera': camera}
+			this.createSceneAndCamera();
 			anim.init(ctx, renderer);
 		}
 		loadParamMapping();
