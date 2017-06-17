@@ -29,17 +29,17 @@ function Sphere() {
 		// Init scene
 		//*********************/
 		ctx['scene'].fog = new THREE.Fog(0x050505, 1, 200);
-		ctx['camera'] = new THREE.PerspectiveCamera(30, 1, 5, 3500);
-		ctx['camera'].position.set(0, 50, 100);
+		//ctx['camera'] = new THREE.PerspectiveCamera(30, 1, 5, 3500);
+		ctx['camera'].position.set(0, 50, -20);
 		ctx['camera'].lookAt(ctx['scene'].position);
 
 
 		//*********************/
 		// Init simulation
 		//*********************/
-		var tris = 2000;
+		var tris = 1000;
 		var particles = tris * 3;
-		var distance = 1.5;
+		var distance = 3.5;
 		simulation = Particulate.ParticleSystem.create(particles, 2);
 
 		this.bounds = Particulate.PointForce.create([0, 0, 0], {
@@ -133,7 +133,7 @@ function Sphere() {
 		//*********************/
 		this.composer = new THREE.EffectComposer(renderer);
 		var renderScene = new THREE.RenderPass(ctx['scene'], ctx['camera']);
-		var bloom = new THREE.BloomPass(1.2);
+		var bloom = new THREE.BloomPass(1.8);
 		var copy = new THREE.ShaderPass(THREE.CopyShader);
 
 		copy.renderToScreen = true;
@@ -145,9 +145,16 @@ function Sphere() {
 
 	this.update = function (timeDelta, parameters) {
 
-		var color = parameters.red.toString() + ", " + parameters.green.toString() + ", " + parameters.blue.toString();
-		this.visParticles.material.color = new THREE.Color( "rgb(" + color + ")" );
-		this.visConnectors.material.color = new THREE.Color( "rgb(" + color + ")" );
+		//var color = HSVtoRGB(parameters.h, parameters.s, parameters.v);
+		//var colorString = color.r.toString() + ", " + color.g.toString() + ", " + color.b.toString();
+		var colorString = "hsl(" + parameters.hue + ", " + parameters.saturation + "%, " + parameters.lightness + "%)"
+		this.visParticles.material.color = new THREE.Color( colorString );
+		this.visConnectors.material.color = new THREE.Color( colorString );
+
+		this.visConnectors.material.opacity = parameters.opacity;
+		this.visParticles.material.opacity = parameters.opacity;
+
+		this.visParticles.material.size = parameters.size;
 
 		this.distances.setDistance(parameters.edgesDistance);
 		this.simulation.setWeights(parameters.particlesWeight);

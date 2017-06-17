@@ -29,7 +29,11 @@ function Particles() {
 		parameters.position.y = Math.sin(tick * options.verticalSpeed) * 10;
 		parameters.position.z = Math.sin(tick * options.horizontalSpeed + options.verticalSpeed) * 5;
 
-		parameters.color = options.color;
+		var colorString = "hsl(" + parameters.hue + ", " + parameters.saturation + "%, " + parameters.lightness + "%)"
+		parameters.color = colorString;
+
+		parameters.sizeRandomness = 2.0;
+		parameters.colorRandomness = 0.2;
 
 		for (var x = 0; x < parameters.spawnRate * timeDelta; x++) {
 			particleSystem.spawnParticle(parameters);

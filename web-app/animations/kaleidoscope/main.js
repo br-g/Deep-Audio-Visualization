@@ -17,6 +17,7 @@ function Kaleidoscope() {
 	}
 
 	this.init = function (ctx, renderer) {
+		ctx['camera'] = new THREE.PerspectiveCamera(50, 1.0, 0.1, 10000);
 		ctx['camera'].position.z = 1000;
 
 		//init object to hold cubes and rotate
@@ -61,8 +62,6 @@ function Kaleidoscope() {
 		this.composer.addPass( this.kaleidoPass );
 		this.composer.addPass( this.rgbPass );
 
-		console.log('okkk');
-
 		//set last pass in composer chain to renderToScreen
 		this.rgbPass.renderToScreen = true;
 
@@ -78,7 +77,6 @@ function Kaleidoscope() {
 		this.rgbPass.uniforms[ "angle" ].value = parameters.angleRGB*3.1416;
 		this.rgbPass.uniforms[ "amount" ].value = parameters.amount;
 		this.kaleidoPass.uniforms[ "sides" ].value = parameters.sides;
-		this.kaleidoPass.uniforms[ "angle" ].value = parameters.angle*3.1416;
 		this.composer.render(0.1);
 	}
 }
