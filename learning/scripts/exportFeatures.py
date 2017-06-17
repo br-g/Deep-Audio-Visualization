@@ -13,11 +13,18 @@ import sys
 import os
 import params
 import extractSpectrograms
+import jsonpickle
 
 rawAudioPath = sys.argv[1]
 outFilePath = sys.argv[2]
 modelPath = sys.argv[3]
 snapshotPath = sys.argv[4]
+
+# Features container
+class Features:
+   def __init__(self, sampleRate):
+      self.sampleRate = sampleRate
+      self.featuresData = {}
 
 ####
 # Extracts spectrograms from raw audio
@@ -69,35 +76,61 @@ def netForward(batch):
 		batch = newBatch
 
 	net.blobs['data'].data[...] = np.reshape(batch, (params.BATCH_SIZE,1,1,params.WINDOW_SIZE))
-	return net.forward(end="encode6")['encode6'][0:initialBatchSize]
+	return net.forward(end="encode7")['encode7'][0:initialBatchSize]
 
 for i in range(0, len(spectrograms) / params.BATCH_SIZE):
 	startInd = i*params.BATCH_SIZE
 	endInd = startInd + params.BATCH_SIZE
 	features[startInd:endInd,:] = netForward(spectrograms[startInd:endInd,:])
-	print(features[startInd:endInd,:])
-	print(len(features))
-	print(len(features[0]))
+
 if len(spectrograms) % params.BATCH_SIZE > 0:
 	startInd = int(len(spectrograms)/params.BATCH_SIZE)*params.BATCH_SIZE
 	features[startInd:,:] = netForward(spectrograms[startInd:,:])
+
+
+####
+# Creates features object and computes blur
+###	
+print "Computing blur..."
+
+featuresContainer = Features(params.MAX_FPS)
+blurLevels = [1, 10, 50, 100, 300, 1000, 3000]
+
+for blurValue in blurLevels:
+	featuresContainer.featuresData["blur" + str(blurValue)] = np.zeros((len(features), params.NB_FEATURES))
+
+	for curFrameInd in range(0, len(features)):
+		minBound = int(math.ceil(curFrameInd-0.5*blurValue))
+		if minBound < 0:
+			minBound = 0
+		maxBound = int(math.ceil(curFrameInd+0.5*blurValue))
+		if maxBound > len(features):
+			maxBound = len(features)
+
+		for curFeatureInd in range(0, params.NB_FEATURES):
+			meanValue = np.mean(features[minBound:maxBound, curFeatureInd])
+			featuresContainer.featuresData["blur" + str(blurValue)][curFrameInd, curFeatureInd] = meanValue
 
 ####
 # Normalizes features
 ###
 print "Normalizing..."
 
-for i in range(0, params.NB_FEATURES):
-	_max = max(features[:,i])
-	_min = min(features[:,i])
-	features[:,i] = np.around((features[:,i] - _min) / (_max - _min), params.FEATURES_PRECISION_DIGITS)
+for blurValue in blurLevels:
+	for curFeatureInd in range(0, params.NB_FEATURES):
+		_max = max(featuresContainer.featuresData["blur" + str(blurValue)][:,curFeatureInd])
+		_min = min(featuresContainer.featuresData["blur" + str(blurValue)][:,curFeatureInd])
+		featuresContainer.featuresData["blur" + str(blurValue)][:,curFeatureInd] = np.around((featuresContainer.featuresData["blur" + str(blurValue)][:,curFeatureInd] - _min) / (_max - _min), params.FEATURES_PRECISION_DIGITS)
+
+for blurValue in blurLevels:
+	featuresContainer.featuresData["blur" + str(blurValue)] = featuresContainer.featuresData["blur" + str(blurValue)].tolist()
 
 ####
 # Exports features in JSON
 ###
 print "Exporting in JSON..."
 
-def exportJSON():
+"""def exportJSON():
 	def exportFeatures():
 		def exportFrame(frame):
 			featureString = "["
@@ -117,9 +150,9 @@ def exportJSON():
 	jsonString += "\"FPS\":\"" + str(params.MAX_FPS) + "\","
 	jsonString += "\"Features\":" + exportFeatures()
 	jsonString += "}"
-	return jsonString
+	return jsonString"""
 
 with open(outFilePath, 'w') as outfile:
-    outfile.write(exportJSON())
+    outfile.write(json.dumps(featuresContainer, default=lambda o: o.__dict__))
 
 print "Done"
