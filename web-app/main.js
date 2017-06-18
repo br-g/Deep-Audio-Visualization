@@ -7,13 +7,17 @@ function App () {
 		this.audioManager = new AudioManager();
 		this.animationManager = new AnimationManager();
 		this.animationManager.init();
-		this.animationManager.nextAnimation();
 		this.playlistManager = new PlaylistManager();
+		return this.animationManager.nextAnimation();
 	}
 
 	this.loadPlaylist = function (filePath) {
-		this.playlistManager.load(filePath);
-		this.playlistManager.randomize();
+		var _this = this;
+
+		return this.playlistManager.load(filePath)
+			.then(function() {
+				_this.playlistManager.randomize();
+			});
 	}
 
     this.setAnimation = function(animName) {
@@ -21,23 +25,20 @@ function App () {
     }
 
     this.nextAnimation = function() {
-    	this.animationManager.nextAnimation();
-    	this.randomizeAnimation();
+    	return this.animationManager.nextAnimation();
     }
 
 	this.playNextSong = function () {
 		var nextSong = this.playlistManager.nextSong();
+		this.updateSongInfo();
 		this.audioManager.pauseMusic();
 		this.audioManager.load(this.playlistManager.getAudioPath());
 		this.animationManager.setAudioManager(this.audioManager);
-		this.animationManager.loadFeatures(this.playlistManager.getFeaturesPath());
-		//this.animationManager.launch();
-		this.audioManager.playMusic();
-		this.updateSongInfo();
-	}
 
-	this.randomizeAnimation = function () {
-		this.animationManager.randomize();
+		var _this = this;
+		return this.animationManager.loadFeatures(this.playlistManager.getFeaturesPath()).then(function() {
+			_this.audioManager.playMusic();
+		});
 	}
 
 	this.updateSongInfo = function () {
@@ -51,18 +52,21 @@ var app = new App();
 $(document).ready(function() {
 	setTimeout(hideStartMessage, 5000);
 
-	app.init();
-	app.loadPlaylist('playlist.json');
-	app.playNextSong();
-	app.animationManager.launch();
+	app.init().then(function() {
+		app.loadPlaylist('playlist.json').then(function() {
+			app.playNextSong().then(function() {
+				app.animationManager.launch();
 
-	$("#controls > #next").click(function() {
-		app.playNextSong();
-	});
+				$("#controls > #next").click(function() {
+					app.playNextSong();
+				});
 
-	$("canvas").click(function() {
-		hideStartMessage();
-	  	app.nextAnimation();
+				$("canvas").click(function() {
+					hideStartMessage();
+				  	app.nextAnimation();
+				});
+			});
+		});
 	});
 });
 

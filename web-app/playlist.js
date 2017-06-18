@@ -2,20 +2,6 @@ function PlaylistManager () {
 	this.list = null;
 	this.pointer = -1;
 
-	this.load = function (filePath) {
-    	var _list;
-    	$.ajax({
-	      url: filePath,
-	      dataType: 'json',
-	      async: false,
-	      success: function(data) {
-	        console.log("Sample songs successfully loaded");
-		    _list = data['playlist'];
-	      }
-	    });
-	    this.list = _list;
-    }
-
     this.randomize = function () {
 		// Uses Fisher–Yates shuffle
 		var currentIndex = this.list.length;
@@ -27,6 +13,20 @@ function PlaylistManager () {
 			this.list[randomIndex] = tmp;
 		}
 	}
+
+	this.load = function (filePath) {
+		var _this = this;
+
+    	return $.ajax({
+	      url: filePath,
+	      dataType: 'json',
+	      async: true,
+	      success: function(data) {
+	        console.log("Sample songs successfully loaded");
+		    _this.list = data['playlist'];
+	      }
+	    });
+    }
 
 	this.nextSong = function () {
 		this.pointer = (this.pointer + 1) % this.list.length;
