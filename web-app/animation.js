@@ -8,7 +8,7 @@ function AnimationManager() {
 	var curAnimName = null;
 	var audioManager = null;
 
-	var SYNC_CONSTANT = 240.0; // ms
+	var SYNC_CONSTANT = 260.0; // ms
 
 	this.init = function() {
 		this.createSceneAndCamera();
@@ -41,9 +41,12 @@ function AnimationManager() {
 			this.createSceneAndCamera();
 			anim.init(ctx, renderer);
 		}
-		loadParamMapping();
-		this.curAnimName = animName;
-		this.randomize();
+
+		var _this = this;
+		return loadParamMapping().then(function () {
+			_this.curAnimName = animName;
+			_this.randomize();
+		});
 	}
 
 	this.setAudioManager = function(_audioManager) {
@@ -52,18 +55,15 @@ function AnimationManager() {
 
 	this.nextAnimation = function() {
 		if (this.curAnimName == null) {
-			this.curAnimName = 'particles';
+			this.curAnimName = 'sphere';
 		}
 		switch (this.curAnimName) {
 			case 'particles':
-				this.setAnimation('sphere');
-				break;
+				return this.setAnimation('sphere');
 			case 'sphere':
-				this.setAnimation('kaleidoscope');
-				break;
+				return this.setAnimation('kaleidoscope');
 			case 'kaleidoscope':
-				this.setAnimation('particles');
-				break;
+				return this.setAnimation('particles');
 			default:
 				console.log('Error: Unknow animation name.');
 		}
@@ -71,7 +71,7 @@ function AnimationManager() {
 
 	this.loadFeatures = function(filePath) {
 		features = new Features();
-		features.load(filePath);
+		return features.load(filePath);
 	}
 
 	this.onWindowResize = function() {
@@ -82,7 +82,7 @@ function AnimationManager() {
 
 	function loadParamMapping() {
 		paramMapping = new ParamMapping();
-		paramMapping.load(anim.getPath() + '/parameters.json');
+		return paramMapping.load(anim.getPath() + '/parameters.json');
 	}
 
 	this.launch = function() {
@@ -100,14 +100,20 @@ function AnimationManager() {
 		var curTime = audioManager.getElapsedTime() * 1000.0;
 		if (curTime > 0) {
 			if (audioManager.ended()) {
-				anim.update((curTime - lastRenderTime) / 1000.0, 
-					paramMapping.doMapDefault(), 
-					curTime - lastRenderTime);
+				var curParameters = paramMapping.doMapDefault();
+				if (curParameters != null) {
+					anim.update((curTime - lastRenderTime) / 1000.0, 
+						pcurParameters, 
+						curTime - lastRenderTime);
+				}
 				app.playNextSong();
 			} else {
-				anim.update((curTime - lastRenderTime) / 1000.0, 
-					paramMapping.doMap(features.get(audioManager.getElapsedTime() * 1000.0 + SYNC_CONSTANT), 
-					curTime - lastRenderTime));
+				var curParameters = paramMapping.doMap(features.get(audioManager.getElapsedTime() * 1000.0 + SYNC_CONSTANT));
+				if (curParameters != null) {
+					anim.update((curTime - lastRenderTime) / 1000.0, 
+						curParameters, 
+						curTime - lastRenderTime);
+				}
 			}
 			lastRenderTime = curTime;
 		}

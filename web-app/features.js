@@ -3,19 +3,18 @@ function Features () {
     this.features = null;
 
     this.load = function (filePath) {
-        var _title, _artist, _sampleRate, _features;
-        $.ajax({
+        var _this = this;
+
+        return $.ajax({
           url: filePath,
           dataType: 'json',
-          async: false,
+          async: true,
           success: function(data) {
             console.log("Features successfully loaded");
-            _sampleRate = data['sampleRate'];
-            _features = data['featuresData'];
+            _this.sampleRate = data['sampleRate'];
+            _this.features = data['featuresData'];
           }
         });
-        this.sampleRate = _sampleRate;
-        this.features = _features;
     }
 
     // Get features at given time in the music.

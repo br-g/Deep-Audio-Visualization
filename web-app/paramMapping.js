@@ -48,22 +48,29 @@ var ParamMapping = function(size, params, map) {
 	this.params = null;
 	this.map = null;
 
+	this.isLoading = false; // Avoid conflicts while loading
+
 	// Loads parameters from AJAX.
 	this.load = function (filePath) {
-		var size = 0;
-		var params = null;
-		var map = null;
-	    $.ajax({
+		var _this = this;
+
+		this.size = 0;
+		this.params = null;
+		this.map = null;
+
+		this.isLoading = true;
+
+	    return $.ajax({
 	      url: filePath,
 	      dataType: 'json',
-	      async: false,
+	      async: true,
 	      success: function(data) {
 	        console.log("Animation parameters successfully loaded");
-		    size = data['parameters'].length;
-		    params = [];
-		    map = [];
-		    for (i = 0; i < size; i++) {
-		    	params.push(new Parameter(
+		    _this.size = data['parameters'].length;
+		    _this.params = [];
+		    _this.map = [];
+		    for (i = 0; i < _this.size; i++) {
+		    	_this.params.push(new Parameter(
 		    		data['parameters'][i]['name'],
 		    		data['parameters'][i]['avg'],
 		    		data['parameters'][i]['min'],
@@ -73,13 +80,11 @@ var ParamMapping = function(size, params, map) {
 		    		data['parameters'][i]['blur'],
 		    		data['parameters'][i]['FPS']
 		    	));
-		    	map.push(i);
+		    	_this.map.push(i);
 		    }
+		    _this.isLoading = false;
 	      }
 	    });
-	    this.size = size;
-	    this.params = params;
-	    this.map = map;
 	}
 
 	this.randomize = function () {
@@ -96,6 +101,8 @@ var ParamMapping = function(size, params, map) {
 
 	// Given some input features, provides a suitable mapping for the animation parameters.
 	this.doMap = function (features, timeElapsed) {
+		if (this.isLoading) return null;
+		
 		if (features["blur1"].length !== this.size) {
 			console.log("Warning: features vector size and number of animation parameters are different.");
 		}
@@ -107,6 +114,8 @@ var ParamMapping = function(size, params, map) {
 	}
 
 	this.doMapDefault = function () {
+		if (this.isLoading) return null;
+
 		var parameters = {};
 		for (var i = 0; i < this.size; i++) {
 			parameters[this.params[i].name] = this.params[i].default;

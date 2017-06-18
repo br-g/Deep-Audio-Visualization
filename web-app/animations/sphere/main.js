@@ -145,22 +145,23 @@ function Sphere() {
 
 	this.update = function (timeDelta, parameters) {
 
-		//var color = HSVtoRGB(parameters.h, parameters.s, parameters.v);
-		//var colorString = color.r.toString() + ", " + color.g.toString() + ", " + color.b.toString();
-		var colorString = "hsl(" + parameters.hue + ", " + parameters.saturation + "%, " + parameters.lightness + "%)"
-		this.visParticles.material.color = new THREE.Color( colorString );
-		this.visConnectors.material.color = new THREE.Color( colorString );
+		if (parameters.hue != undefined) {
 
-		this.visConnectors.material.opacity = parameters.opacity;
-		this.visParticles.material.opacity = parameters.opacity;
+			var colorString = "hsl(" + parameters.hue + ", " + parameters.saturation + "%, " + parameters.lightness + "%)"
+			this.visParticles.material.color = new THREE.Color( colorString );
+			this.visConnectors.material.color = new THREE.Color( colorString );
 
-		this.visParticles.material.size = parameters.size;
+			this.visConnectors.material.opacity = parameters.opacity;
+			this.visParticles.material.opacity = parameters.opacity;
 
-		this.distances.setDistance(parameters.edgesDistance);
-		this.simulation.setWeights(parameters.particlesWeight);
+			this.visParticles.material.size = parameters.size;
 
-		this.composer.render(0.1);
-		this.simulation.tick(0.5);
-		this.lines.attributes.position.needsUpdate = true;
+			this.distances.setDistance(parameters.edgesDistance);
+			this.simulation.setWeights(parameters.particlesWeight);
+
+			this.composer.render(0.1);
+			this.simulation.tick(0.5);
+			this.lines.attributes.position.needsUpdate = true;
+		}
 	}
 }
