@@ -1,1 +1,0 @@
-../lib/caffe/build/tools/caffe test -weights snapshots/autoencoder__iter_50000.caffemodel -model models/autoencoder.prototxt
