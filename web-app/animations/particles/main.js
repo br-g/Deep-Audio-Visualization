@@ -1,3 +1,8 @@
+/***************************************************/
+/* Original animation from Charlie Hoey
+/* http://charliehoey.com
+/***************************************************/
+
 function Particles() {
 	var options;
 	var tick = 0;
