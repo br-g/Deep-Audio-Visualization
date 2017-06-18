@@ -71,6 +71,12 @@ function Kaleidoscope() {
 		this.kaleidoPass.uniforms[ "angle" ].value = 0.0*3.1416;
 	}
 
+	this.updateDefault = function () {
+		this.cubeHolder.rotation.y += 0.002;
+		this.cubeHolder.rotation.x += 0.002;
+		this.composer.render(0.1);
+	}
+
 	this.update = function (timeDelta, parameters) {
 		this.cubeHolder.rotation.y += parameters.rotationY;
 		this.cubeHolder.rotation.x += parameters.rotationX;

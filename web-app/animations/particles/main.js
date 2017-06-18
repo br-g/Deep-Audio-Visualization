@@ -13,22 +13,43 @@ function Particles() {
 	}
 
 	this.init = function (ctx, renderer) {
-		ctx['camera'].position.z = 33;
+		ctx['camera'].position.z = 38;
 		particleSystem = new THREE.GPUParticleSystem({
 			maxParticles: 250000
 		});
 		ctx['scene'].add(particleSystem);
 
 		options = {
-			horizontalSpeed: 1.5,
-			verticalSpeed: 1.33,
+			horizontalSpeed: 1.2,
+			verticalSpeed: 1.05,
 			color: 0xaa88ff
 		};
 	}
 
+	this.updateDefault = function () {
+		tick += 0.02; // in sec
+
+		var parameters = {};
+		parameters.position = new THREE.Vector3();
+		parameters.position.x = Math.sin(tick * options.horizontalSpeed) * 20;
+		parameters.position.y = Math.sin(tick * options.verticalSpeed) * 10;
+		parameters.position.z = Math.sin(tick * options.horizontalSpeed + options.verticalSpeed) * 5;
+
+		parameters.positionRandomness = 0.75;
+		parameters.velocityRandomness = 1.1;
+		parameters.turbulence = 0.3;
+		parameters.timeScale = 0.5;
+		parameters.lifetime = 1.9;
+		parameters.size = 3.7;
+
+		for (var x = 0; x < 2000 * 0.02; x++) {
+			particleSystem.spawnParticle(parameters);
+		}
+		particleSystem.update(tick);
+	}
+
 	this.update = function (timeDelta, parameters) {
 		tick += timeDelta; // in sec
-
 		parameters.position = new THREE.Vector3();
 		parameters.position.x = Math.sin(tick * options.horizontalSpeed) * 20;
 		parameters.position.y = Math.sin(tick * options.verticalSpeed) * 10;

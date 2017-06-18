@@ -95,12 +95,12 @@ function Sphere() {
 
 		this.visParticles = new THREE.PointCloud(this.dots,
 			new THREE.PointCloudMaterial({
-			  color : "0x000000",
+			  color : "hsl(220, 50%, 50%)",
 			  blending : THREE.AdditiveBlending,
 			  transparent : true,
 			  map : this.texture,
-			  size : 1.5,
-			  opacity : 0.9,
+			  size : 1.0,
+			  opacity : 0.7
 			}));
 
 		// Connections
@@ -112,9 +112,9 @@ function Sphere() {
 			new THREE.LineBasicMaterial({
 			  blending : THREE.AdditiveBlending,
 			  transparent : true,
-			  color : "0x000000",
+			  color : "hsl(220, 50%, 50%)",
 			  linewidth : 1,
-			  opacity : 0.5
+			  opacity : 0.7
 			}));
 
 		ctx['scene'].add(this.visParticles);
@@ -141,6 +141,12 @@ function Sphere() {
 		this.composer.addPass(renderScene);
 		this.composer.addPass(bloom);
 		this.composer.addPass(copy);
+	}
+
+	this.updateDefault = function () {
+		this.composer.render(0.1);
+		this.simulation.tick(0.5);
+		this.lines.attributes.position.needsUpdate = true;
 	}
 
 	this.update = function (timeDelta, parameters) {
