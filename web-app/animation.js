@@ -98,24 +98,22 @@ function AnimationManager() {
 		requestAnimationFrame(renderAnimation);
 		renderer.render(ctx['scene'], ctx['camera']);
 		var curTime = audioManager.getElapsedTime() * 1000.0;
-		if (curTime > 0) {
-			if (audioManager.ended()) {
-				var curParameters = paramMapping.doMapDefault();
-				if (curParameters != null) {
-					anim.update((curTime - lastRenderTime) / 1000.0, 
-						curParameters, 
-						curTime - lastRenderTime);
-				}
-				app.playNextSong();
-			} else {
-				var curParameters = paramMapping.doMap(features.get(audioManager.getElapsedTime() * 1000.0 + SYNC_CONSTANT));
-				if (curParameters != null) {
-					anim.update((curTime - lastRenderTime) / 1000.0, 
-						curParameters, 
-						curTime - lastRenderTime);
-				}
-			}
-			lastRenderTime = curTime;
+
+		if (audioManager.ended()) {
+			app.playNextSong();
 		}
+		if (curTime <= 0) {
+			anim.updateDefault();
+		} else {
+			var curParameters = paramMapping.doMap(features.get(audioManager.getElapsedTime() * 1000.0 + SYNC_CONSTANT));
+			if (curParameters == null || curParameters == undefined) {
+				anim.updateDefault();
+			} else {
+				anim.update((curTime - lastRenderTime) / 1000.0, 
+					curParameters, 
+					curTime - lastRenderTime);
+			}
+		}
+		lastRenderTime = curTime;
 	}
 };
