@@ -94,6 +94,12 @@ function AnimationManager() {
 		paramMapping.randomize();
 	}
 
+	window.addEventListener('resize', function () {
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		ctx['camera'].aspect = window.innerWidth / window.innerHeight;
+		ctx['camera'].updateProjectionMatrix();
+	});
+
 	function renderAnimation () {
 		requestAnimationFrame(renderAnimation);
 		renderer.render(ctx['scene'], ctx['camera']);
