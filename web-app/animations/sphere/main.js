@@ -145,23 +145,20 @@ function Sphere() {
 
 	this.update = function (timeDelta, parameters) {
 
-		if (parameters.hue != undefined) {
+		var colorString = "hsl(" + parameters.hue + ", " + parameters.saturation + "%, " + parameters.lightness + "%)"
+		this.visParticles.material.color = new THREE.Color( colorString );
+		this.visConnectors.material.color = new THREE.Color( colorString );
 
-			var colorString = "hsl(" + parameters.hue + ", " + parameters.saturation + "%, " + parameters.lightness + "%)"
-			this.visParticles.material.color = new THREE.Color( colorString );
-			this.visConnectors.material.color = new THREE.Color( colorString );
+		this.visConnectors.material.opacity = parameters.opacity;
+		this.visParticles.material.opacity = parameters.opacity;
 
-			this.visConnectors.material.opacity = parameters.opacity;
-			this.visParticles.material.opacity = parameters.opacity;
+		this.visParticles.material.size = parameters.size;
 
-			this.visParticles.material.size = parameters.size;
+		this.distances.setDistance(parameters.edgesDistance);
+		this.simulation.setWeights(parameters.particlesWeight);
 
-			this.distances.setDistance(parameters.edgesDistance);
-			this.simulation.setWeights(parameters.particlesWeight);
-
-			this.composer.render(0.1);
-			this.simulation.tick(0.5);
-			this.lines.attributes.position.needsUpdate = true;
-		}
+		this.composer.render(0.1);
+		this.simulation.tick(0.5);
+		this.lines.attributes.position.needsUpdate = true;
 	}
 }

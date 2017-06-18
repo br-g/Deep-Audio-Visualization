@@ -55,7 +55,7 @@ function AnimationManager() {
 
 	this.nextAnimation = function() {
 		if (this.curAnimName == null) {
-			this.curAnimName = 'sphere';
+			this.curAnimName = 'particles';
 		}
 		switch (this.curAnimName) {
 			case 'particles':
@@ -103,7 +103,7 @@ function AnimationManager() {
 				var curParameters = paramMapping.doMapDefault();
 				if (curParameters != null) {
 					anim.update((curTime - lastRenderTime) / 1000.0, 
-						pcurParameters, 
+						curParameters, 
 						curTime - lastRenderTime);
 				}
 				app.playNextSong();
