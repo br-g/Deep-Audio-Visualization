@@ -43,6 +43,7 @@ canvas {
 		position: absolute;
 		right: 24px;
 		bottom: 9px;
+		cursor: pointer;
 	}
 	#controls > #songInfo {
 		color: white;
