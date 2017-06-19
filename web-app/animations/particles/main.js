@@ -13,15 +13,15 @@ function Particles() {
 	}
 
 	this.init = function (ctx, renderer) {
-		ctx['camera'].position.z = 38;
+		ctx['camera'].position.z = 34;
 		particleSystem = new THREE.GPUParticleSystem({
 			maxParticles: 250000
 		});
 		ctx['scene'].add(particleSystem);
 
 		options = {
-			horizontalSpeed: 1.2,
-			verticalSpeed: 1.05,
+			horizontalSpeed: 0.8,
+			verticalSpeed: 0.4,
 			color: 0xaa88ff
 		};
 	}
@@ -31,8 +31,8 @@ function Particles() {
 
 		var parameters = {};
 		parameters.position = new THREE.Vector3();
-		parameters.position.x = Math.sin(tick * options.horizontalSpeed) * 20;
-		parameters.position.y = Math.sin(tick * options.verticalSpeed) * 10;
+		parameters.position.x = Math.sin(tick * options.horizontalSpeed) * 19;
+		parameters.position.y = Math.sin(tick * options.verticalSpeed) * 4.5;
 		parameters.position.z = Math.sin(tick * options.horizontalSpeed + options.verticalSpeed) * 5;
 
 		parameters.positionRandomness = 0.75;
