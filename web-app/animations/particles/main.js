@@ -28,23 +28,6 @@ function Particles() {
 
 	this.updateDefault = function () {
 		tick += 0.02; // in sec
-
-		var parameters = {};
-		parameters.position = new THREE.Vector3();
-		parameters.position.x = Math.sin(tick * options.horizontalSpeed) * 19;
-		parameters.position.y = Math.sin(tick * options.verticalSpeed) * 4.5;
-		parameters.position.z = Math.sin(tick * options.horizontalSpeed + options.verticalSpeed) * 5;
-
-		parameters.positionRandomness = 0.75;
-		parameters.velocityRandomness = 1.1;
-		parameters.turbulence = 0.3;
-		parameters.timeScale = 0.5;
-		parameters.lifetime = 1.9;
-		parameters.size = 3.7;
-
-		for (var x = 0; x < 2000 * 0.02; x++) {
-			particleSystem.spawnParticle(parameters);
-		}
 		particleSystem.update(tick);
 	}
 
