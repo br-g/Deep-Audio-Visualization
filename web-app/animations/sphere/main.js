@@ -39,7 +39,7 @@ function Sphere() {
 		//*********************/
 		var tris = 1000;
 		var particles = tris * 3;
-		var distance = 3.5;
+		var distance = 1.0;
 		simulation = Particulate.ParticleSystem.create(particles, 2);
 
 		this.bounds = Particulate.PointForce.create([0, 0, 0], {
@@ -133,7 +133,7 @@ function Sphere() {
 		//*********************/
 		this.composer = new THREE.EffectComposer(renderer);
 		var renderScene = new THREE.RenderPass(ctx['scene'], ctx['camera']);
-		var bloom = new THREE.BloomPass(1.8);
+		var bloom = new THREE.BloomPass(2.0);
 		var copy = new THREE.ShaderPass(THREE.CopyShader);
 
 		copy.renderToScreen = true;
