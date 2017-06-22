@@ -1,7 +1,7 @@
 # Deep Audio Visualization
 
 Live demo: https://bgodefroyfr.github.io/Deep-Audio-Visualization/web-app    
-Detailed project: https://github.com/BGodefroyFR/Deep-Audio-Visualization/blob/master/report.pdf
+Detailed project: https://github.com/BGodefroyFR/Deep-Audio-Visualization/blob/master/doc/report.pdf
 
 Audio visualization relies on feature extraction, such as spectrograms, timbre or pitch. Those are commonly hand-crafted and require engineering effort and prior knowledge. This project experiments the use of features automatically extracted by a deep neural network instead, using techniques that already demonstrated great potential for music classification and auto-tagging.
 
