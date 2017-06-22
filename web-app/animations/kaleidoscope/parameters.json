@@ -2,9 +2,9 @@
 	"parameters": [
 		{ "name": "rotationX", "avg": 0.004, "min": 0.0, "max": 0.008, "step": -1, "blur": 1, "FPS": 1.0 },
 		{ "name": "rotationY", "avg": 0.004, "min": 0.0, "max": 0.008, "step": -1, "blur": 1, "FPS": 1.0 },
-		{ "name": "amount", "avg": 0.1, "min": 0.0, "max": 1.0, "step": -1, "blur": 1, "FPS": 0.1 },
-		{ "name": "sides", "avg": 12, "min": 0, "max": 24, "step": -1, "blur": 1, "FPS": 0.02 },
-		{ "name": "angleRGB", "avg": 0.5, "min": 0.0, "max": 2.0, "step": -1, "blur": 1, "FPS": 0.1 },
+		{ "name": "amount", "avg": 0.1, "min": 0.0, "max": 1.0, "step": -1, "blur": 100, "FPS": 0.1 },
+		{ "name": "sides", "avg": 12, "min": 0, "max": 24, "step": -1, "blur": 100, "FPS": 0.02 },
+		{ "name": "angleRGB", "avg": 0.5, "min": 0.0, "max": 2.0, "step": -1, "blur": 100, "FPS": 0.1 },
 		{ "name": "nothing1", "avg": 0.0, "min": 0.0, "max": 1.0, "step": -1, "blur": 1, "FPS": 0.0 },
 		{ "name": "nothing2", "avg": 0.0, "min": 0.0, "max": 1.0, "step": -1, "blur": 1, "FPS": 0.0 },
 		{ "name": "nothing3", "avg": 0.0, "min": 0.0, "max": 1.0, "step": -1, "blur": 1, "FPS": 0.0 },
