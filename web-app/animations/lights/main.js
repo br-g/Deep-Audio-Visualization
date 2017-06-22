@@ -5,7 +5,7 @@
 /* https://particulatejs.org
 /***************************************************/
 
-function Sphere() {
+function Lights() {
 
 	this.simulation = null;
 	this.composer = null;
@@ -20,18 +20,17 @@ function Sphere() {
 	this.texture = null;
 
 	this.getPath = function () {
-		return 'animations/sphere';
+		return 'animations/lights';
 	}
 
-	this.init = function (ctx, renderer) {
+	this.init = function (camera, scene, renderer) {
 
 		//*********************/
 		// Init scene
 		//*********************/
-		ctx['scene'].fog = new THREE.Fog(0x050505, 1, 200);
-		//ctx['camera'] = new THREE.PerspectiveCamera(30, 1, 5, 3500);
-		ctx['camera'].position.set(0, 50, -40);
-		ctx['camera'].lookAt(ctx['scene'].position);
+		scene.fog = new THREE.Fog(0x050505, 1, 200);
+		camera.position.set(0, 50, -40);
+		camera.lookAt(scene.position);
 
 
 		//*********************/
@@ -117,8 +116,8 @@ function Sphere() {
 			  opacity : 0.7
 			}));
 
-		ctx['scene'].add(this.visParticles);
-		ctx['scene'].add(this.visConnectors);
+		scene.add(this.visParticles);
+		scene.add(this.visConnectors);
 
 
 		//*********************/
@@ -132,7 +131,7 @@ function Sphere() {
 		// Init post FX
 		//*********************/
 		this.composer = new THREE.EffectComposer(renderer);
-		var renderScene = new THREE.RenderPass(ctx['scene'], ctx['camera']);
+		var renderScene = new THREE.RenderPass(scene, camera);
 		var bloom = new THREE.BloomPass(2.0);
 		var copy = new THREE.ShaderPass(THREE.CopyShader);
 

@@ -8,16 +8,16 @@ function Particles() {
 	var tick = 0;
 	var particleSystem;
 
-	this.getPath = function (ctx) {
+	this.getPath = function () {
 		return 'animations/particles';
 	}
 
-	this.init = function (ctx, renderer) {
-		ctx['camera'].position.z = 34;
+	this.init = function (camera, scene, renderer) {
+		camera.position.z = 34;
 		particleSystem = new THREE.GPUParticleSystem({
 			maxParticles: 250000
 		});
-		ctx['scene'].add(particleSystem);
+		scene.add(particleSystem);
 
 		options = {
 			horizontalSpeed: 0.8,

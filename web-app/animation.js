@@ -1,5 +1,6 @@
 function AnimationManager() {
-	var ctx = null; // camera + scene
+	var camera = null;
+	var scene = null;
 	var anim = null;
 	var renderer = null;
 	var features = null;
@@ -18,9 +19,8 @@ function AnimationManager() {
 	}
 
 	this.createSceneAndCamera = function () {
-		var scene = new THREE.Scene();
-		var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
-		ctx = {'scene': scene, 'camera': camera}
+		scene = new THREE.Scene();
+		camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
 	}
 
 	this.setAnimation = function(animName) {
@@ -31,15 +31,15 @@ function AnimationManager() {
 			case 'particles':
 				anim = new Particles();
 				break;
-			case 'sphere':
-				anim = new Sphere();
+			case 'lights':
+				anim = new Lights();
 				break;
 			default:
 				console.log('Error: Unknow animation name.');
 		}
 		if (anim) {
 			this.createSceneAndCamera();
-			anim.init(ctx, renderer);
+			anim.init(camera, scene, renderer);
 		}
 
 		var _this = this;
@@ -59,8 +59,8 @@ function AnimationManager() {
 		}
 		switch (this.curAnimName) {
 			case 'particles':
-				return this.setAnimation('sphere');
-			case 'sphere':
+				return this.setAnimation('lights');
+			case 'lights':
 				return this.setAnimation('kaleidoscope');
 			case 'kaleidoscope':
 				return this.setAnimation('particles');
@@ -75,8 +75,8 @@ function AnimationManager() {
 	}
 
 	this.onWindowResize = function() {
-		ctx['camera'].aspect = window.innerWidth / window.innerHeight;
-		ctx['camera'].updateProjectionMatrix();
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
@@ -96,13 +96,13 @@ function AnimationManager() {
 
 	window.addEventListener('resize', function () {
 		renderer.setSize(window.innerWidth, window.innerHeight);
-		ctx['camera'].aspect = window.innerWidth / window.innerHeight;
-		ctx['camera'].updateProjectionMatrix();
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
 	});
 
 	function renderAnimation () {
 		requestAnimationFrame(renderAnimation);
-		renderer.render(ctx['scene'], ctx['camera']);
+		renderer.render(scene, camera);
 		var curTime = audioManager.getElapsedTime() * 1000.0;
 
 		if (audioManager.ended()) {

@@ -50,7 +50,7 @@ function App () {
 var app = new App();
 
 $(document).ready(function() {
-	setTimeout(hideStartMessage, 5000);
+	setTimeout(hideStartMessage, 10000);
 
 	app.init().then(function() {
 		app.loadPlaylist('playlist.json').then(function() {
