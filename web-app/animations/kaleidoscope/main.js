@@ -16,18 +16,18 @@ function Kaleidoscope() {
 		return 'animations/kaleidoscope';
 	}
 
-	this.init = function (ctx, renderer) {
-		ctx['camera'] = new THREE.PerspectiveCamera(50, 1.0, 0.1, 10000);
-		ctx['camera'].position.z = 1000;
+	this.init = function (camera, scene, renderer) {
+		camera = new THREE.PerspectiveCamera(50, 1.0, 0.1, 10000);
+		camera.position.z = 1000;
 
 		//init object to hold cubes and rotate
 		this.cubeHolder = new THREE.Object3D();
-		ctx['scene'].add(this.cubeHolder);
+		scene.add(this.cubeHolder);
 
 		//add light
 		var light = new THREE.PointLight(0xFFFFFF, 1);
 		light.position = new THREE.Vector3(1000, 1000, 1000);
-		ctx['scene'].add(light);
+		scene.add(light);
 
 		//use lambert material to get greyscale shadows
 		var material = new THREE.MeshLambertMaterial();
@@ -51,7 +51,7 @@ function Kaleidoscope() {
 		//POST PROCESSING
 		//Create Shader Passes
 		//render pass renders scene into effects composer
-		var renderPass = new THREE.RenderPass( ctx['scene'], ctx['camera'] );
+		var renderPass = new THREE.RenderPass( scene, camera );
 		this.rgbPass = new THREE.ShaderPass( THREE.RGBShiftShader );
 		this.kaleidoPass = new THREE.ShaderPass( THREE.KaleidoShader );
 
