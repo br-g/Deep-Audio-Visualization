@@ -5,11 +5,11 @@ function AudioManager () {
         this.audio = new Audio(filePath);
     }
     this.playMusic = function () {
-    	this.audio.play();
+        this.audio.play();
     }
     this.pauseMusic = function () {
-    	if (this.audio != null)
-    		this.audio.pause();
+        if (this.audio != null)
+            this.audio.pause();
     }
     this.getElapsedTime = function() {
         return this.audio.currentTime; // in s
