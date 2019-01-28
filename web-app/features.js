@@ -20,11 +20,11 @@ function Features () {
     // Get features at given time in the music.
     // Time in ms.
     this.get = function (elapsedTime) {
-    	var frameIndex = Math.round(elapsedTime * this.sampleRate / 1000.0);
+        var frameIndex = Math.round(elapsedTime * this.sampleRate / 1000.0);
       var frame = {}
       for (var b in this.features) {
         frame[b] = this.features[b][frameIndex];
       }
-    	return /*this.features["blur" + blur][frameIndex]*/ frame;
+        return /*this.features["blur" + blur][frameIndex]*/ frame;
     }
 }
