@@ -1,28 +1,27 @@
 # Deep Audio Visualization
 
-Live demo: https://bgodefroyfr.github.io/Deep-Audio-Visualization/web-app    
-Detailed project: https://github.com/BGodefroyFR/Deep-Audio-Visualization/blob/master/doc/report.pdf
+Live demo: https://br-g.github.io/Deep-Audio-Visualization/web-app    
 
-Audio visualization relies on feature extraction, such as spectrograms, timbre or pitch. Those are commonly hand-crafted and require engineering effort and prior knowledge. This project experiments the use of features automatically extracted by a deep neural network instead, using techniques that already demonstrated great potential for music classification and auto-tagging.
+Audio visualization usually relies on hand-crafted features, like intensity, timbre or pitch. These metrics are defined by humans and are biased towards our cultural representation of sound.     
+In this project, we have trained a Neural Net to generate these features directly from spectrograms, in an unsupervized way. We thus get rid of this bias and hope the resulting visualizations can help us perceive music in different ways.
 
-Demo crafted in Javascript, with *Three.js*. Deep learning is performed using *Caffe*.  
-Animations use code stubs from [Charlie Hoey](http://charliehoey.com), [Felix Turner](http://airtight.cc) and [Jay Weeks](https://github.com/jpweeks/particulate-js).
+The demo is built in Javascript, with *Three.js*. We used *Caffe* for deep learning.    
+Animations relies on some code from [Charlie Hoey](http://charliehoey.com), [Felix Turner](http://airtight.cc) and [Jay Weeks](https://github.com/jpweeks/particulate-js).
 
 
-
-## How it works
-The system is composed of two main phases: feature extraction and real-time visualization.    
-First, we need to compute a low dimensional representation of the audio input, that is, performing a lossy compression of sound. To do so, a stacked autoencoder is trained in an unsupervised way, providing a non-linear mapping, from spectrograms to small vectors. In practice, a spectrogram vector of size 11,025 (corresponding to half a second of sound, at sample rate 22,050 Hz) is reduced to 10 features, throughout 7 layers. On a GPU, training the model and encoding songs takes a few minutes.
+## System overview
+There is two distinct phases to generate the visualizations: feature extraction (computationally intensive, performed offline) and real-time visualization.     
+Extracting features consists in computing a low dimensional representation of the audio input, that is, performing a lossy compression of sound. To do so, a stacked autoencoder is trained to generate a non-linear mapping, from spectrograms to small vectors. In this project, spectrograms are vectors of size 11,025 (for half a second of sound, at sample rate 22,050 Hz) that we compress to vectors of size 10 (for 10 features), using 7 layers. With a GPU, training the model and encoding songs takes a few minutes.
 
 <p align="center">
-<img align="center" src="https://github.com/BGodefroyFR/Deep-Audio-Visualization/blob/master/doc/autoencoder_schema.jpg?raw=true" alt="Autoencoder schema" title="Autoencoder schema" height="150px">
+<img align="center" src="https://github.com/br-g/Deep-Audio-Visualization/blob/master/doc/autoencoder_schema.jpg?raw=true" alt="Autoencoder schema" title="Autoencoder schema" height="150px">
 </p>
 
-Then, for each animation, these features are mapped dynamically to parameters such as speed, size or color, in real time. With random, we could generate *10!* (~ 3.6 million) possible mappings, and as many possible visualizations! Finally, for each parameter is defined a particular update frequency, from about 0.05 to 5 Hz to avoid over-reactivity and make movement fluid.
+Then, for each animation, generated features are mapped dynamically to parameters such as speed, size or color, in real time. Features and parameters are mapped randomly. This enables *10!* (~ 3.6 million) possible mappings and as many possible visualizations - each visit to the demo is a unique experience!
 
 
 ## Installation (Unix)
-* `git clone git@github.com:BGodefroyFR/Deep-Audio-Visualization.git`    
+* `git clone git@github.com:br-g/Deep-Audio-Visualization.git`    
 * `cd Deep-Audio-Visualization/web-app`   
 * `http-server` (install it with *npm* if needed)
 *  Open http://127.0.0.1:8080/index.html in *Chrome*
